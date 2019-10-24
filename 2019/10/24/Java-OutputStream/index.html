@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="outputstream," />
 
 
 
@@ -79,16 +79,18 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta name="keywords" content="IT Java programer">
+<meta name="description" content="JAVA-  OutputStream\FileOutputStream\OutputStreamWriter\BufferWriter\FileWriter总结介绍：  OutputStream:  OutputStream是字节输出流的所有类的超类，是个抽象类。输出流接收到字节流并将其发送到某个底层接收器。输出流各式各样，有文件输出流(FileOutputStream)，GZIP输出流(GZ">
+<meta name="keywords" content="outputstream">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https:&#x2F;&#x2F;martin6699s.github.io&#x2F;2019&#x2F;10&#x2F;24&#x2F;hello-world&#x2F;index.html">
+<meta property="og:title" content="Java-OutputStream">
+<meta property="og:url" content="https:&#x2F;&#x2F;martin6699s.github.io&#x2F;2019&#x2F;10&#x2F;24&#x2F;Java-OutputStream&#x2F;index.html">
 <meta property="og:site_name" content="马丁每天都很忙">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="JAVA-  OutputStream\FileOutputStream\OutputStreamWriter\BufferWriter\FileWriter总结介绍：  OutputStream:  OutputStream是字节输出流的所有类的超类，是个抽象类。输出流接收到字节流并将其发送到某个底层接收器。输出流各式各样，有文件输出流(FileOutputStream)，GZIP输出流(GZ">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-24T05:36:57.524Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;martin6699s.github.io&#x2F;asset&#x2F;images&#x2F;post-2.jpg">
+<meta property="og:updated_time" content="2019-10-24T08:21:14.791Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;martin6699s.github.io&#x2F;asset&#x2F;images&#x2F;post-2.jpg">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://martin6699s.github.io/2019/10/24/hello-world/"/>
+  <link rel="canonical" href="https://martin6699s.github.io/2019/10/24/Java-OutputStream/"/>
 
 
 
 
 
-  <title>Hello World | 马丁每天都很忙</title>
+  <title>Java-OutputStream | 马丁每天都很忙</title>
   
 
 
@@ -251,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://martin6699s.github.io/2019/10/24/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://martin6699s.github.io/2019/10/24/Java-OutputStream/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="martin6699s(JinSheng Lin)">
@@ -268,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">Java-OutputStream</h1>
         
 
         <div class="post-meta">
@@ -280,7 +282,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-24T15:22:38+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-24T16:17:25+08:00">
                 2019-10-24
               </time>
             
@@ -290,6 +292,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA/" itemprop="url" rel="index">
+                    <span itemprop="name">JAVA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -318,19 +342,41 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+        <p><img src="/asset/images/post-2.jpg" alt=""></p>
+<h2 id="JAVA-OutputStream-FileOutputStream-OutputStreamWriter-BufferWriter-FileWriter总结"><a href="#JAVA-OutputStream-FileOutputStream-OutputStreamWriter-BufferWriter-FileWriter总结" class="headerlink" title="JAVA-  OutputStream\FileOutputStream\OutputStreamWriter\BufferWriter\FileWriter总结"></a>JAVA-  OutputStream\FileOutputStream\OutputStreamWriter\BufferWriter\FileWriter总结</h2><p>介绍：</p>
+<ol>
+<li><p>OutputStream: </p>
+<p>OutputStream是字节输出流的所有类的超类，是个抽象类。输出流接收到字节流并将其发送到某个底层接收器。输出流各式各样，有文件输出流(FileOutputStream)，GZIP输出流(GZIPOutputStream)，对象输出流(ObjectOutputStream)。 </p>
+</li>
+<li><p>FileOutputStream: </p>
+<p>FIleOutputStream是用于将数据写入到输出流File或者文件描述符，文件是否打开或被创建取决于底层操作系统。有些操作系统只允许一次只能打开一个文件来写入文件字节流FileOutputStream。在这种情况下，如果文件已被打开或不存在且无法创建文件(权限原因)，则此类的构造方法将报错FileNotFoundException异常。<strong>FileOutputStream用于如图像数据的原始字节流写入</strong>，<code>对于写入字符流，请考虑使用FileWriter</code>。</p>
+</li>
+<li><p>OutputStreamWriter:</p>
+<p>说OutputStreamWriter之前，先说下OutputStreamWriter的超类Writer，Writer抽象类目的是为了能写入字符流，提供抽象方法write给子类自行实现，并<strong>继承了flushable接口(实现了flushable接口类在使用flush()方法时，会将缓存输出流写入到底层设备上，如File输出流写入到文件中，网络套接字输出流经TCP/IP发送到底层设备 再传输到指定地址)</strong>。封装了操作OutputStream输出的一系列动作和优化。</p>
+<p>而OutputStreamWriter是封装了OutputStream子类的Writer类，是把字符流（也就是字符数组或字符串）转换为字节流写入到底层设备。可以指定字符集，或使用系统默认字符集。每次调用write()方法都会在给定字符上调用编码转换器（也就是把字符转换为指定字符集的编码）,并把生成的字节在写入底层输出流之前写入到缓存区中积累<strong>（缓冲区大小默认8192字节）</strong>。【注意： 传递给write()方法的字符不会缓冲，转换的字节会被缓冲 】</p>
+<blockquote>
+<p>为了最大的效率，请考虑在BufferedWriter中包装一个OutputStreamWriter，以避免频繁的转换器调用。 例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Writer out</span><br><span class="line"> = new BufferedWriter(new OutputStreamWriter(System.out)); </span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>这种多次调用转换器的情况 就个人理解，发生在多次调用write方法才会发生。</p>
+</li>
+</ol>
+<ol start="4">
+<li>FileWriter</li>
+</ol>
+<p>FileWriter为写入文件提供便利，是OutputStreamWriter的子类，FileWriter类构造器中使用FileOutputStream传递给父类OutputStreamWriter操作。可以理解为FileOutputStream文件输出流和OutputStreamWriter的组合。<strong>缺点是使用系统字符集，不能自己指定字符集。</strong></p>
+<ol start="5">
+<li>BufferedWriter:</li>
+</ol>
+<p>顾名思义 带缓冲区的Writer类，写文本到指定的字符输出流，缓存字符，以便有效地写入字符、数组、字符串。除非需要及时输出，否则建议使用BufferedWriter包装OutputStreamWriter或者FileWriter等类写入字符，<strong>BufferedWriter提供的缓冲区默认8192字符（也可以自己指定）， 可以减少多次为输出流分配内存</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FileOutputStream outputStream=<span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">OutputStreamWriter writer=<span class="keyword">new</span> OutputStreamWriter(outputStream,<span class="string">"GBK"</span>);</span><br><span class="line">BufferedWriter bufferedWriter=<span class="keyword">new</span> BufferedWriter(writer);</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p> BufferedWriter封装的是writer，也就是当buffer满了让别的writer去处理输出，而OutputStreamWriter封装的事数据流(OutputStream)，它是让数据流去处理输出 </p>
+<p><strong>要理清OutputStream和OutputStreamWriter的关系，OutputStream可以理解为一种资源，例如水，而OutputStreamWriter可以理解为一直操作工具，例如水龙头。水龙头控制着水的流出。而BufferedWriter可以理解为有储水箱的水龙头。</strong></p>
+<p><strong>stream和writer的不同，一个是二进制数据，一个是字符数据</strong> </p>
+<p><strong>上述OutputStreamWriter和BufferWriter说的缓冲是指程序本身的缓冲，不是操作系统层面的缓冲（或者TCP发送缓冲区），调用flush方法是时将程序缓冲区数据写入到操作系统缓冲上。</strong></p>
+<p><a href="https://blog.csdn.net/zhangcarcard/article/details/51210811" target="_blank" rel="noopener">深入解析Java中Flushable接口的flush方法</a></p>
+<p> <a href="https://blog.csdn.net/HD243608836/article/details/87882100" target="_blank" rel="noopener">FileOutputStream,OutputStreamWriter, BufferedWriter为什么连用？</a></p>
 
       
     </div>
@@ -346,6 +392,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/outputstream/" rel="tag"># outputstream</a>
+          
+        </div>
+      
 
       
       
@@ -355,8 +407,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/24/Java-Instrumentation/" rel="next" title="Java-Instrumentation">
-                <i class="fa fa-chevron-left"></i> Java-Instrumentation
+              <a href="/2019/10/24/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
               </a>
             
           </div>
@@ -364,10 +416,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/10/24/Java-OutputStream/" rel="prev" title="Java-OutputStream">
-                Java-OutputStream <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -499,7 +547,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA-OutputStream-FileOutputStream-OutputStreamWriter-BufferWriter-FileWriter总结"><span class="nav-number">1.</span> <span class="nav-text">JAVA-  OutputStream\FileOutputStream\OutputStreamWriter\BufferWriter\FileWriter总结</span></a></li></ol></div>
             
 
           </div>
