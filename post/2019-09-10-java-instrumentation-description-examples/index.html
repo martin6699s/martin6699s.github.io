@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>JAVA Instrumentation之浅谈 - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="martin6699s" /><meta name="description" content="You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes." /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/2019-09-10-java-instrumentation-description-examples/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="JAVA Instrumentation之浅谈" />
+<meta property="og:description" content="You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/2019-09-10-java-instrumentation-description-examples/" />
+<meta property="article:published_time" content="2019-09-10T13:32:20+03:00" />
+<meta property="article:modified_time" content="2019-09-10T13:32:20+03:00" />
+<meta itemprop="name" content="JAVA Instrumentation之浅谈">
+<meta itemprop="description" content="You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes.">
+<meta itemprop="datePublished" content="2019-09-10T13:32:20+03:00" />
+<meta itemprop="dateModified" content="2019-09-10T13:32:20+03:00" />
+<meta itemprop="wordCount" content="5634">
+
+
+
+<meta itemprop="keywords" content="Blog,Java Instrument," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JAVA Instrumentation之浅谈"/>
+<meta name="twitter:description" content="You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">JAVA Instrumentation之浅谈</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-09-10 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#instrumentation-的基本功能和用法">Instrumentation 的基本功能和用法</a>
+          <ul>
+            <li><a href="#premain方式">premain方式</a></li>
+            <li><a href="#agentmain方式">Agentmain方式</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>instrumentation是JAVA SE 5 引进来的新特性，它可以构建一个独立于应用程序的代理程序，用于监控和协助运行在JVM上的程序，甚至能够替换和修改某些类的定义（这类功能被叫做打桩或插桩，另外如ASM、javasisst也是打桩、插桩），实现JVM级别的AOP，不过只能在程序启动之前javaagent指定代理程序。到JAVA SE 6，对instrument功能进行了增强，还可以支持程序启动后的 instrument、本地代码（native code）instrument，以及动态改变 classpath 等等，具体能做的如：内存dump，线程dump，类信息统计（比如加载的类及大小以及实际个数），非侵入式运行时AOP（btrace及阿里出品的jvm-sandbox就是使用了instrument），动态设置vm flag(但没有几个可以用的，因为有些flag都是在jvm启动过程中使用，是一次性的)，打印vm flag，获取系统属性等。</p>
+<h2 id="instrumentation-的基本功能和用法">Instrumentation 的基本功能和用法</h2>
+<p><code>java.lang.instrument</code>包的具体实现，依赖于JVMTI。JVMTI（Java Virtual Machine Tool Interface）是一套由Java虚拟机提供的，为JVM相关的工具提供的本地编程接口集合。JVMTI能做什么呢？它支持第三方工具程序以代理的方式连接和访问JVM（实际上就是进程间socket通信），并利用JVMTI提供的丰富的编码接口，完成很多跟JVM相关的功能。</p>
+<p>Instrumentation有两种方式：</p>
+<ol>
+<li>premain方式，在程序启动之前通过<code>-javaagent</code>指定代理程序; （Java se 5）</li>
+<li>agentmain方式，在程序启动之后指定代理程序;（Java se 6）</li>
+</ol>
+<h3 id="premain方式">premain方式</h3>
+<h4 id="1说明">（1）说明</h4>
+<p>在Java SE 5当中，开发者可以让Instrumentation代理在main函数运行前执行。这种方式可以能够替换和修改某些类的定义，增加方法、删除方法，修改方法等。实现具体步骤如下：</p>
+<ol>
+<li>
+<p>代理程序编写premain函数</p>
+<p>在代理程序中编写一个Java类，包含以下两个方法之一：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">（1） public static void premain(String agentArgs, Instrumentation inst);
+（2） public static void premain(String agentArgs);
+</code></pre></td></tr></table>
+</div>
+</div><p>其中，如果两个方法同时存在，优先执行方法（1），忽略方法（2）</p>
+<p>在premain方法内完成对类的各种操作，如替代或修改 。实际上就是修改或代替原有的类字节码。另外在premain方式下，JVM在执行main方法之前，先会调用代理程序的premain方法，其中inst参数是由JVM自动传入。</p>
+</li>
+<li>
+<p>配置代理应用的MANIFEST.MF文件</p>
+<p>代理程序需要配置META-INF目录下MANIFEST.MF，配置内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Manifest-Version: 1.0
+Premain-Class: Premain
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Boot-Class-Path：javassist.jar
+</code></pre></td></tr></table>
+</div>
+</div><p>Premain-Class： 指定了代理使用的类，也就是，该类含有premain方法。当一个代理在JVM中启动时会从MANIFEST.MF找到对应的代理类。如果有命名空间，应该包含命名空间；</p>
+<p>Can-Redefine-Classes:  指明代理JAR文件是否可以重新定义类。可选，默认为false。使用代理，需要设为true；</p>
+<p>Boot-Class-Path:  指明该代理JAR文件中有用到的第三方jar包放到这里，例如代理要用到javassist.jar来操作操作字节码，就需要指定，并在打包的时候把Boot-Class-Path指定的jar包也一起打包；</p>
+<p>Can-Retransform-Classes: 它的作用在于只有在代理JAR文件中<code>Can-Retransform-Classes</code>设置了 manifest属性 <code>true</code>并且JVM支持此功能时，才支持重新转换。在单个JVM的单个实例化期间，对此方法的多次调用将返回相同结果。默认为false。在agentmain方式下需要将该属性设为true。</p>
+</li>
+<li>
+<p>代理程序 jar文件打包</p>
+<p>需要把含premain代理程序、META-INF目录及文件、依赖包一同打包成jar。如打包成MyAgent.jar</p>
+</li>
+<li>
+<p>运行</p>
+<p><code>java  -javaagent: /path/to/martin6699s/MyAgent.jar  application.jar</code></p>
+</li>
+</ol>
+<h4 id="2premain方式举例">（2）premain方式举例：</h4>
+<p>随便建个项目命名为mainTest， 在mainTest项目中建一个类<code>TimeHelloWorld</code>，等会利用代理修改该类方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.myagent.martin6699s</span><span class="o">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * @author martin
+</span><span class="cm"> * @date 2019/9/9
+</span><span class="cm"> **/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TimeHelloWorld</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">2000</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;hello world!!&#34;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHelloMartin</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">1000</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;hello martin!!&#34;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>再建一个含main方法的类<code>Main</code>作为程序入口，创建TimeHelloWorld并执行sayHello方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.myagent.martin6699s</span><span class="o">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * @author martin
+</span><span class="cm"> * @date 2019/9/11
+</span><span class="cm"> **/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;开始------&#34;</span><span class="o">);</span>
+
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">TimeHelloWorld</span> <span class="n">helloWorld</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TimeHelloWorld</span><span class="o">();</span>
+            <span class="n">helloWorld</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
+            <span class="n">helloWorld</span><span class="o">.</span><span class="na">sayHelloMartin</span><span class="o">();</span>
+
+            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">1000</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;结束------&#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>直接运行Main类，输出如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">开始------
+hello world!!
+hello martin!!
+结束------
+</code></pre></td></tr></table>
+</div>
+</div><p>现在需要计算sayHello和sayHelloMartin方法的执行时间，但又不想在这两方法内部加代码；</p>
+<p>那执行main方法前把TimeHelloWorld类字节码替换成我们想要的字节码，</p>
+<p>那接下来再建一个名为MyAgent的项目, 在MyAgent项目中建一个PremainTransformer类实现ClassFileTransformer接口，其中实现transform方法来完成字节码的替换。这里用到javassist进行字节码操作。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.myagent.martin6699s</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javassist.ClassPool</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javassist.CtClass</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javassist.CtMethod</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javassist.CtNewMethod</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.lang.instrument.ClassFileTransformer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.instrument.IllegalClassFormatException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.security.ProtectionDomain</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * @author martin
+</span><span class="cm"> * @date 2019/9/9
+</span><span class="cm"> **/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PremainTransformer</span> <span class="kd">implements</span> <span class="n">ClassFileTransformer</span> <span class="o">{</span>
+
+    <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">prefix</span> <span class="o">=</span> <span class="s">&#34;\nlong startTime = System.currentTimeMillis();\n&#34;</span><span class="o">;</span>
+
+    <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">postfix</span> <span class="o">=</span> <span class="s">&#34;\nlong endTime = System.currentTimeMillis();\n&#34;</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">methodList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+
+
+    <span class="kd">public</span> <span class="nf">PremainTransformer</span><span class="o">()</span> <span class="o">{</span>
+       <span class="n">methodList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;com.myagent.martin6699s.TimeHelloWorld.sayHello&#34;</span><span class="o">);</span>
+       <span class="n">methodList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;com.myagent.martin6699s.TimeHelloWorld.sayHelloMartin&#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">transform</span><span class="o">(</span><span class="n">ClassLoader</span> <span class="n">loader</span><span class="o">,</span> <span class="n">String</span> <span class="n">className</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">classBeingRedefined</span><span class="o">,</span> <span class="n">ProtectionDomain</span> <span class="n">protectionDomain</span><span class="o">,</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">classfileBuffer</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IllegalClassFormatException</span> <span class="o">{</span>
+
+        <span class="k">if</span><span class="o">(</span><span class="n">className</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&#34;com/myagent/martin6699s&#34;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="c1">// 判断加载的类包名是不是我们需要目标类的包名
+</span><span class="c1"></span>            <span class="n">className</span> <span class="o">=</span> <span class="n">className</span><span class="o">.</span><span class="na">replaceAll</span><span class="o">(</span><span class="s">&#34;/&#34;</span><span class="o">,</span> <span class="s">&#34;.&#34;</span><span class="o">);</span>
+
+            <span class="n">CtClass</span> <span class="n">ctClass</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+            <span class="k">try</span> <span class="o">{</span>
+
+                <span class="n">ctClass</span> <span class="o">=</span> <span class="n">ClassPool</span><span class="o">.</span><span class="na">getDefault</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">className</span><span class="o">);</span>
+
+                <span class="k">for</span><span class="o">(</span><span class="n">String</span> <span class="n">method</span><span class="o">:</span> <span class="n">methodList</span><span class="o">)</span> <span class="o">{</span>
+
+                    <span class="k">if</span><span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="n">className</span><span class="o">))</span> <span class="o">{</span>
+
+                        <span class="n">String</span> <span class="n">methodName</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span>
+                                <span class="nf">substring</span><span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">lastIndexOf</span><span class="o">(</span><span class="s">&#34;.&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">method</span><span class="o">.</span><span class="na">length</span><span class="o">());</span>
+
+                        <span class="n">String</span> <span class="n">outputStr</span> <span class="o">=</span> <span class="s">&#34;\nSystem.out.println(\&#34;方法执行时间:  &#34;</span>
+                                <span class="o">+</span> <span class="n">methodName</span>
+                                <span class="o">+</span> <span class="s">&#34;\&#34; + (endTime - startTime) + \&#34;ms.\&#34;);&#34;</span><span class="o">;</span>
+
+                        <span class="n">CtMethod</span> <span class="n">ctMethod</span> <span class="o">=</span> <span class="n">ctClass</span>
+                                <span class="o">.</span><span class="na">getDeclaredMethod</span><span class="o">(</span><span class="n">methodName</span><span class="o">);</span>
+
+                        <span class="n">String</span> <span class="n">newMethodName</span> <span class="o">=</span> <span class="n">methodName</span> <span class="o">+</span> <span class="s">&#34;$impl&#34;</span><span class="o">;</span>
+
+                        <span class="n">ctMethod</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="n">newMethodName</span><span class="o">);</span>
+
+                        <span class="c1">//创建新的方法，复制原来的方法 ，名字为原来的名字
+</span><span class="c1"></span>                        <span class="n">CtMethod</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">CtNewMethod</span><span class="o">.</span><span class="na">copy</span><span class="o">(</span><span class="n">ctMethod</span><span class="o">,</span> <span class="n">methodName</span><span class="o">,</span> <span class="n">ctClass</span><span class="o">,</span><span class="kc">null</span><span class="o">);</span>
+
+                        <span class="c1">// 构建新的方法体
+</span><span class="c1"></span>                        <span class="n">StringBuilder</span> <span class="n">bodyStr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">(</span><span class="n">250</span><span class="o">);</span>
+                        <span class="n">bodyStr</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;{&#34;</span><span class="o">);</span>
+                        <span class="n">bodyStr</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">prefix</span><span class="o">);</span>
+                        <span class="n">bodyStr</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">newMethodName</span><span class="o">+</span><span class="s">&#34;($$);\n&#34;</span><span class="o">);</span>
+                        <span class="n">bodyStr</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">postfix</span><span class="o">);</span>
+                        <span class="n">bodyStr</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">outputStr</span><span class="o">);</span>
+                        <span class="n">bodyStr</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;}&#34;</span><span class="o">);</span>
+
+                        <span class="n">newMethod</span><span class="o">.</span><span class="na">setBody</span><span class="o">(</span><span class="n">bodyStr</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+                        <span class="n">ctClass</span><span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="n">newMethod</span><span class="o">);</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;准备替换-----&#34;</span> <span class="o">+</span> <span class="n">className</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">ctClass</span><span class="o">.</span><span class="na">toBytecode</span><span class="o">();</span>
+
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;异常信息：&#34;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>然后，需要在代理程序MyAgent中在建一个类，类中有premain方法:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">com</span><span class="p">.</span><span class="nx">myagent</span><span class="p">.</span><span class="nx">martin6699s</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nx">instrument</span><span class="p">.</span><span class="nx">Instrumentation</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nx">instrument</span><span class="p">.</span><span class="nx">UnmodifiableClassException</span><span class="p">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * @author martin
+</span><span class="cm"> * @date 2019/9/11
+</span><span class="cm"> **/</span>
+<span class="nx">public</span> <span class="nx">class</span> <span class="nx">MyPremainAgent</span> <span class="p">{</span>
+
+    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">void</span> <span class="nf">premain</span><span class="p">(</span><span class="nx">String</span> <span class="nx">agentArgs</span><span class="p">,</span> <span class="nx">Instrumentation</span> <span class="nx">inst</span><span class="p">)</span>
+            <span class="nx">throws</span> <span class="nx">ClassNotFoundException</span><span class="p">,</span> <span class="nx">UnmodifiableClassException</span> <span class="p">{</span>
+
+        <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="s">&#34;进入---premain---start&#34;</span><span class="p">);</span>
+        <span class="c1">// 加转换类,可以加多个
+</span><span class="c1"></span>        <span class="nx">inst</span><span class="p">.</span><span class="nf">addTransformer</span><span class="p">(</span><span class="nx">new</span> <span class="nf">PremainTransformer</span><span class="p">());</span>
+        <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="s">&#34;进入---premain---end&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>在MyAgent项目中建META-INF/MANIFEST.MF文件，MANIFEST.MF文件内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Manifest-Version: 1.0
+Premain-Class: com.myagent.martin6699s.MyPremainAgent
+Can-Redefine-Classes: true
+Boot-Class-Path: javassist.jar
+</code></pre></td></tr></table>
+</div>
+</div><p>然后把MyAgent项目连同javassist.jar、MANIFEST.MF一起打包成MyAgent.jar，到放到<code>E:\MyAgent\target\</code>目录下</p>
+<p>把mainTest项目两个类编译成.class文件输出<code>E:\Work\MultiProject\JAVASE6Agent\mainTest\target\production\mainTest</code>目录下</p>
+<p>最后就可以执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"> java -javaagent:E:\MyAgent\target\MyAgent.jar -Dfile.encoding=UTF-8  -classpath &#34;E:\Work\MultiProject\JAVASE6Agent\mainTest\target\production\mainTest&#34; com.myagent.martin6699s.Main
+</code></pre></td></tr></table>
+</div>
+</div><p>输出如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">进入---premain---start
+进入---premain---end
+准备替换-----com.myagent.martin6699s.Main
+开始------
+准备替换-----com.myagent.martin6699s.TimeHelloWorld
+hello world!!
+方法执行时间:  sayHello2000ms.
+hello martin!!
+方法执行时间:  sayHelloMartin1000ms.
+结束------
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="agentmain方式">Agentmain方式</h3>
+<h4 id="1说明-1">（1）说明</h4>
+<p>agentmain方式是JAVA SE 6对Instrumentation的增强，支持程序启动后动态代理对类的转换，使用retransformClasses方法声明待转换的类，转换过程不会导致其初始化，静态变量的值保持不变，但它也有局限性，下面段话引自<code>JAVA SE 7 文档中关于Instrumentation restransformClasses方法介绍</code>:</p>
+<blockquote>
+<p>The retransformation may change method bodies, the constant pool and attributes. The retransformation must not add, remove or rename fields or methods, change the signatures of methods, or change inheritance. These restrictions maybe be lifted in future versions. The class file bytes are not checked, verified and installed until after the transformations have been applied, if the resultant bytes are in error this method will throw an exception.</p>
+<p>If this method throws an exception, no classes have been retransformed.</p>
+</blockquote>
+<p>翻译过来就是：转换可以改变方法主体、常量池和属性。转换不能新增、删除、重命名字段和方法，不能改变方法签名，不能改变继承关系。在将来的版本可能会取消限制。在转换之前，不会对类文件字节码进行检查、检验、安装，如果转换后合成的字节码发生错误，restransformClasses方法将抛异常。 如果restransformClasses方法抛异常，将不会进行类转换，也就是不会改变类字节码。</p>
+<p>因为这个局限性，导致之前运行代码是出现异常：</p>
+<p><code>Caused by: java.lang.UnsupportedOperationException: class redefinition failed: attempted to add a method</code></p>
+<p>原因是：我在AgentmainTransformer类里面使用了和premain方式一样的代码，在类中构建了一个新的方法，导致异常，后来改成替换方法主体就通过了。</p>
+<p>具体步骤：</p>
+<ol>
+<li>编写含agentmain方法的类及实现ClassFileTransformer的类；</li>
+<li>编写META-INF/MANIFEST.MF文件；</li>
+<li>打包jar；</li>
+<li>编写控制程序模拟监控，实际上就是为了初始化并触发Attach Listener监听事件进程，动态代理替换原先字节码；</li>
+<li>运行监控程序；</li>
+</ol>
+<h4 id="2agentman方式举例">（2）Agentman方式举例</h4>
+<p>和premain一样同样需要mainTest项目来作为目标项目，但稍微改一下Main类，把for循环 <code>i &lt; 1</code>改为<code>i &lt; 60</code> 方便测试：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.myagent.martin6699s</span><span class="o">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * @author martin
+</span><span class="cm"> * @date 2019/9/11
+</span><span class="cm"> **/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;开始------&#34;</span><span class="o">);</span>
+
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">60</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">TimeHelloWorld</span> <span class="n">helloWorld</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TimeHelloWorld</span><span class="o">();</span>
+            <span class="n">helloWorld</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
+            <span class="n">helloWorld</span><span class="o">.</span><span class="na">sayHelloMartin</span><span class="o">();</span>
+
+            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">10000</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;结束------&#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>接下来编写AgentmainTransformer类，和PremainTransformer类不同的是直接修改方法体，而不是创建方法体副本（相当于创建新方法）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.myagent.martin6699s</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javassist.ClassPool</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javassist.CtClass</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javassist.CtMethod</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.lang.instrument.ClassFileTransformer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.instrument.IllegalClassFormatException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.security.ProtectionDomain</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * @author martin
+</span><span class="cm"> * @date 2019/9/9
+</span><span class="cm"> **/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AgentmainTransformer</span> <span class="kd">implements</span> <span class="n">ClassFileTransformer</span> <span class="o">{</span>
+
+    <span class="kd">final</span> <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">methodList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+
+
+    <span class="kd">public</span> <span class="nf">AgentmainTransformer</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">methodList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;com.myagent.martin6699s.TimeHelloWorld.sayHello&#34;</span><span class="o">);</span>
+        <span class="n">methodList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;com.myagent.martin6699s.TimeHelloWorld.sayHelloMartin&#34;</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">transform</span><span class="o">(</span><span class="n">ClassLoader</span> <span class="n">loader</span><span class="o">,</span> <span class="n">String</span> <span class="n">className</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">classBeingRedefined</span><span class="o">,</span> <span class="n">ProtectionDomain</span> <span class="n">protectionDomain</span><span class="o">,</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">classfileBuffer</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IllegalClassFormatException</span> <span class="o">{</span>
+
+        <span class="k">if</span><span class="o">(</span><span class="n">className</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&#34;com/myagent/martin6699s&#34;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="c1">// 判断加载的类包名是不是我们需要目标类的包名
+</span><span class="c1"></span>            <span class="n">className</span> <span class="o">=</span> <span class="n">className</span><span class="o">.</span><span class="na">replaceAll</span><span class="o">(</span><span class="s">&#34;/&#34;</span><span class="o">,</span> <span class="s">&#34;.&#34;</span><span class="o">);</span>
+
+            <span class="n">CtClass</span> <span class="n">ctClass</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+            <span class="k">try</span> <span class="o">{</span>
+
+                <span class="n">ctClass</span> <span class="o">=</span> <span class="n">ClassPool</span><span class="o">.</span><span class="na">getDefault</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">className</span><span class="o">);</span>
+
+                <span class="k">for</span><span class="o">(</span><span class="n">String</span> <span class="n">method</span><span class="o">:</span> <span class="n">methodList</span><span class="o">)</span> <span class="o">{</span>
+
+                    <span class="k">if</span><span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="n">className</span><span class="o">))</span> <span class="o">{</span>
+
+                        <span class="n">String</span> <span class="n">methodName</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span>
+                                <span class="nf">substring</span><span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">lastIndexOf</span><span class="o">(</span><span class="s">&#34;.&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span><span class="o">);</span>
+
+                        <span class="n">CtMethod</span> <span class="n">ctMethod</span> <span class="o">=</span> <span class="n">ctClass</span>
+                                <span class="o">.</span><span class="na">getDeclaredMethod</span><span class="o">(</span><span class="n">methodName</span><span class="o">);</span>
+                        <span class="n">ctMethod</span><span class="o">.</span><span class="na">addLocalVariable</span><span class="o">(</span><span class="s">&#34;startTime&#34;</span><span class="o">,</span> <span class="n">CtClass</span><span class="o">.</span><span class="na">longType</span><span class="o">);</span>
+                        <span class="n">ctMethod</span><span class="o">.</span><span class="na">insertBefore</span><span class="o">(</span><span class="s">&#34;startTime = System.currentTimeMillis();&#34;</span><span class="o">);</span>
+                        <span class="n">ctMethod</span><span class="o">.</span><span class="na">insertAfter</span><span class="o">(</span><span class="s">&#34;{final long endTime = System.currentTimeMillis();\n System.out.println(\&#34;方法(&#34;</span><span class="o">+</span> <span class="n">className</span> <span class="o">+</span><span class="s">&#34;#&#34;</span> <span class="o">+</span> <span class="n">methodName</span> <span class="o">+</span><span class="s">&#34;)执行时间: \&#34; + (endTime-startTime) + \&#34; 毫秒(ms) \&#34;);}&#34;</span><span class="o">);</span>
+
+                    <span class="o">}</span>
+                <span class="o">}</span>
+
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;准备替换-----&#34;</span> <span class="o">+</span> <span class="n">className</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">ctClass</span><span class="o">.</span><span class="na">toBytecode</span><span class="o">();</span>
+
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;异常信息：&#34;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>含有agentmain方法的类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">com</span><span class="p">.</span><span class="nx">myagent</span><span class="p">.</span><span class="nx">martin6699s</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nx">instrument</span><span class="p">.</span><span class="nx">Instrumentation</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nx">instrument</span><span class="p">.</span><span class="nx">UnmodifiableClassException</span><span class="p">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * @author martin
+</span><span class="cm"> * @date 2019/9/9
+</span><span class="cm"> **/</span>
+<span class="nx">public</span> <span class="nx">class</span> <span class="nx">MyAgentmainAgent</span> <span class="p">{</span>
+
+   <span class="nx">public</span> <span class="nx">static</span> <span class="nx">void</span> <span class="nf">agentmain</span><span class="p">(</span><span class="nx">String</span> <span class="nx">agentArgs</span><span class="p">,</span> <span class="nx">Instrumentation</span> <span class="nx">inst</span><span class="p">)</span>
+       <span class="nx">throws</span> <span class="nx">ClassNotFoundException</span><span class="p">,</span> <span class="nx">UnmodifiableClassException</span> <span class="p">{</span>
+
+       <span class="nx">String</span> <span class="nx">targetClassPath</span> <span class="p">=</span> <span class="s">&#34;com.myagent.martin6699s.TimeHelloWorld&#34;</span><span class="p">;</span>
+
+       <span class="k">for</span><span class="p">(</span><span class="nx">Class</span><span class="p">&lt;</span><span class="err">?</span><span class="p">&gt;</span> <span class="nx">clazz</span> <span class="p">:</span> <span class="nx">inst</span><span class="p">.</span><span class="nf">getAllLoadedClasses</span><span class="p">())</span> <span class="p">{</span>
+
+           <span class="k">if</span><span class="p">(!</span><span class="nx">inst</span><span class="p">.</span><span class="nf">isModifiableClass</span><span class="p">(</span><span class="nx">clazz</span><span class="p">))</span> <span class="p">{</span>
+               <span class="k">continue</span><span class="p">;</span>
+           <span class="p">}</span>
+
+           <span class="k">if</span><span class="p">(</span><span class="nx">clazz</span><span class="p">.</span><span class="nf">getName</span><span class="p">().</span><span class="nf">equals</span><span class="p">(</span><span class="nx">targetClassPath</span><span class="p">))</span> <span class="p">{</span>
+               <span class="nx">inst</span><span class="p">.</span><span class="nf">addTransformer</span><span class="p">(</span><span class="nx">new</span> <span class="nf">AgentmainTransformer</span><span class="p">(),</span> <span class="kc">true</span><span class="p">);</span>
+               <span class="nx">inst</span><span class="p">.</span><span class="nf">retransformClasses</span><span class="p">(</span><span class="nx">clazz</span><span class="p">);</span>
+               <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="s">&#34;Agent Main Done&#34;</span><span class="p">);</span>
+
+           <span class="p">}</span>
+       <span class="p">}</span>
+
+   <span class="p">}</span>
+
+
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>然后编写MANIFEST.MF配置文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Manifest-Version: 1.0
+Agent-Class: com.myagent.martin6699s.MyAgentmainAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Boot-Class-Path: javassist.jar
+</code></pre></td></tr></table>
+</div>
+</div><p>其中Agent-Class指明代理jar中代理执行代码在那个类上</p>
+<p>然后打包成MyAgent2.jar</p>
+<p>为了运行 Attach API，我们需要一个控制程序来模拟监控过程：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">import com.sun.tools.attach.AgentInitializationException;
+import com.sun.tools.attach.AgentLoadException;
+import com.sun.tools.attach.AttachNotSupportedException;
+import com.sun.tools.attach.VirtualMachine;
+
+import java.io.IOException;
+
+/**
+ * @author martin
+ * @date 2019/9/11
+ **/
+public class AttachTreadMain {
+
+
+    public static void main(String[] args) {
+
+        String pid = args[0];
+        VirtualMachine vm = null;
+
+        System.out.println(&#34;pid=&#34; + pid);
+        try {
+             vm = VirtualMachine.attach(pid);
+             vm.loadAgent(&#34;E:\\Work\\MultiProject\\JAVASE6Agent\\MyAgent2\\target\\MyAgent2.jar&#34;);
+        } catch (AttachNotSupportedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (AgentLoadException e) {
+            e.printStackTrace();
+        } catch (AgentInitializationException e) {
+            e.printStackTrace();
+        } finally {
+            if(vm != null) {
+                try {
+                    vm.detach();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+
+</code></pre></td></tr></table>
+</div>
+</div><p>其中loadAgent方法参数为MyAgent2.jar的文件绝对路径。</p>
+<p>最后第二步，运行目标项目mainTest的Main类，通过<code>jps -l</code>找到Main类程序对应的pid是多少，假如pid=10012</p>
+<p>最后把pid作为程序参数传给监控程序AttachTreadMain并运行。结果目标项目mainTest输出结果如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">开始------
+hello world!!
+hello martin!!
+hello world!!
+hello martin!!
+hello world!!
+hello martin!!
+hello world!!
+hello martin!!
+准备替换-----com.myagent.martin6699s.TimeHelloWorld
+Agent Main Done
+hello world!!
+方法(com.myagent.martin6699s.TimeHelloWorld#sayHello)执行时间: 2001 毫秒(ms) 
+hello martin!!
+方法(com.myagent.martin6699s.TimeHelloWorld#sayHelloMartin)执行时间: 1000 毫秒(ms) 
+......
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="坑点">坑点</h5>
+<p>agentmain方式需要指定Can-Retransform-Classes为true，否则会报异常<code>Caused by: java.lang.UnsupportedOperationException: adding retransformable transformers is not supported in this environment</code></p>
+<p>到此是不是觉得这个功能很强大，以后就可以线上调试不用重启服务了，是不是很开森！</p>
+<p>其实Intellij idea 调试、强大的Btrace bug跟踪调试工具、阿里出品的jvm-sandbox都是利用JAVA这种特性来做的。</p>
+<p>示例代码放在github上了： <a href="https://github.com/martin6699s/java-examples/tree/master/Instrumentation">https://github.com/martin6699s/java-examples/tree/master/Instrumentation</a></p>
+<p>【参考链接】</p>
+<p><a href="https://www.ibm.com/developerworks/cn/java/j-lo-jse61/index.html">IBM Java SE 6 特性 Instrumentation功能</a></p>
+<p><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/instrument/Instrumentation.html">Java SE 7 Instrumentation文档</a></p>
+<p><a href="https://docs.oracle.com/javase/7/docs/jdk/api/attach/spec/com/sun/tools/attach/VirtualMachine.html">Java SE 7 VirtualMachine文档</a></p>
+<p><a href="https://blog.51cto.com/5162886/2044541">java agent机制</a></p>
+<p><a href="http://calvin1978.blogcn.com/articles/vjtools-tools4.html">入门科普，围绕JVM的各种外挂技术</a></p>
+<p><a href="https://blog.csdn.net/jinxin70/article/details/85690904">JavaAgent源码分析</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">martin6699s</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-09-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/blog/">Blog</a>
+          <a href="/tags/java-instrument/">Java Instrument</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/2019-10-19-java-outputstream/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">JAVA IO输出流总结</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://localhost:1313" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="http://localhost:1313" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="http://localhost:1313" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="http://localhost:1313" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="http://localhost:1313" class="iconfont icon-google" title="google"></a>
+      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
+      <a href="http://localhost:1313" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://localhost:1313" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://localhost:1313" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://localhost:1313" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="http://localhost:1313" class="iconfont icon-tumblr" title="tumblr"></a>
+      <a href="http://localhost:1313" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="http://localhost:1313" class="iconfont icon-gitlab" title="gitlab"></a>
+      <a href="http://localhost:1313" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>martin6699</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

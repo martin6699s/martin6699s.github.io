@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>JAVA IO输出流总结 - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="martin6699s" /><meta name="description" content="You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes." /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/2019-10-19-java-outputstream/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="JAVA IO输出流总结" />
+<meta property="og:description" content="You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/2019-10-19-java-outputstream/" />
+<meta property="article:published_time" content="2019-10-19T13:32:20+03:00" />
+<meta property="article:modified_time" content="2019-10-19T13:32:20+03:00" />
+<meta itemprop="name" content="JAVA IO输出流总结">
+<meta itemprop="description" content="You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes.">
+<meta itemprop="datePublished" content="2019-10-19T13:32:20+03:00" />
+<meta itemprop="dateModified" content="2019-10-19T13:32:20+03:00" />
+<meta itemprop="wordCount" content="1801">
+
+
+
+<meta itemprop="keywords" content="Blog,Java OutputStream Or Writer," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JAVA IO输出流总结"/>
+<meta name="twitter:description" content="You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">JAVA IO输出流总结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-10-19 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#java---outputstreamfileoutputstreamoutputstreamwriterbufferwriterfilewriter总结">JAVA-  OutputStream\FileOutputStream\OutputStreamWriter\BufferWriter\FileWriter总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="java---outputstreamfileoutputstreamoutputstreamwriterbufferwriterfilewriter总结">JAVA-  OutputStream\FileOutputStream\OutputStreamWriter\BufferWriter\FileWriter总结</h2>
+<p>介绍：</p>
+<ol>
+<li>
+<p>OutputStream:</p>
+<p>OutputStream是字节输出流的所有类的超类，是个抽象类。输出流接收到字节流并将其发送到某个底层接收器。输出流各式各样，有文件输出流(FileOutputStream)，GZIP输出流(GZIPOutputStream)，对象输出流(ObjectOutputStream)。</p>
+</li>
+<li>
+<p>FileOutputStream:</p>
+<p>FIleOutputStream是用于将数据写入到输出流File或者文件描述符，文件是否打开或被创建取决于底层操作系统。有些操作系统只允许一次只能打开一个文件来写入文件字节流FileOutputStream。在这种情况下，如果文件已被打开或不存在且无法创建文件(权限原因)，则此类的构造方法将报错FileNotFoundException异常。<strong>FileOutputStream用于如图像数据的原始字节流写入</strong>，<code>对于写入字符流，请考虑使用FileWriter</code>。</p>
+</li>
+<li>
+<p>OutputStreamWriter:</p>
+<p>说OutputStreamWriter之前，先说下OutputStreamWriter的超类Writer，Writer抽象类目的是为了能写入字符流，提供抽象方法write给子类自行实现，并<strong>继承了flushable接口(实现了flushable接口类在使用flush()方法时，会将缓存输出流写入到底层设备上，如File输出流写入到文件中，网络套接字输出流经TCP/IP发送到底层设备 再传输到指定地址)</strong>。封装了操作OutputStream输出的一系列动作和优化。</p>
+<p>而OutputStreamWriter是封装了OutputStream子类的Writer类，是把字符流（也就是字符数组或字符串）转换为字节流写入到底层设备。可以指定字符集，或使用系统默认字符集。每次调用write()方法都会在给定字符上调用编码转换器（也就是把字符转换为指定字符集的编码）,并把生成的字节在写入底层输出流之前写入到缓存区中积累**（缓冲区大小默认8192字节）**。【注意： 传递给write()方法的字符不会缓冲，转换的字节会被缓冲 】</p>
+<blockquote>
+<p>为了最大的效率，请考虑在BufferedWriter中包装一个OutputStreamWriter，以避免频繁的转换器调用。 例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">  Writer out
+   = new BufferedWriter(new OutputStreamWriter(System.out)); 
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p>这种多次调用转换器的情况 就个人理解，发生在多次调用write方法才会发生。</p>
+</li>
+<li>
+<p>FileWriter</p>
+</li>
+</ol>
+<p>FileWriter为写入文件提供便利，是OutputStreamWriter的子类，FileWriter类构造器中使用FileOutputStream传递给父类OutputStreamWriter操作。可以理解为FileOutputStream文件输出流和OutputStreamWriter的组合。<strong>缺点是使用系统字符集，不能自己指定字符集。</strong></p>
+<ol start="5">
+<li>BufferedWriter:</li>
+</ol>
+<p>顾名思义 带缓冲区的Writer类，写文本到指定的字符输出流，缓存字符，以便有效地写入字符、数组、字符串。除非需要及时输出，否则建议使用BufferedWriter包装OutputStreamWriter或者FileWriter等类写入字符，<strong>BufferedWriter提供的缓冲区默认8192字符（也可以自己指定）， 可以减少多次为输出流分配内存</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">FileOutputStream</span> <span class="n">outputStream</span><span class="o">=</span><span class="k">new</span> <span class="n">FileOutputStream</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+<span class="n">OutputStreamWriter</span> <span class="n">writer</span><span class="o">=</span><span class="k">new</span> <span class="n">OutputStreamWriter</span><span class="o">(</span><span class="n">outputStream</span><span class="o">,</span><span class="s">&#34;GBK&#34;</span><span class="o">);</span>
+<span class="n">BufferedWriter</span> <span class="n">bufferedWriter</span><span class="o">=</span><span class="k">new</span> <span class="n">BufferedWriter</span><span class="o">(</span><span class="n">writer</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>BufferedWriter封装的是writer，也就是当buffer满了让别的writer去处理输出，而OutputStreamWriter封装的事数据流(OutputStream)，它是让数据流去处理输出</p>
+<p><strong>要理清OutputStream和OutputStreamWriter的关系，OutputStream可以理解为一种资源，例如水，而OutputStreamWriter可以理解为一直操作工具，例如水龙头。水龙头控制着水的流出。而BufferedWriter可以理解为有储水箱的水龙头。</strong></p>
+<p><strong>stream和writer的不同，一个是二进制数据，一个是字符数据</strong></p>
+<p><strong>上述OutputStreamWriter和BufferWriter说的缓冲是指程序本身的缓冲，不是操作系统层面的缓冲（或者TCP发送缓冲区），调用flush方法是时将程序缓冲区数据写入到操作系统缓冲上。</strong></p>
+<p><a href="https://blog.csdn.net/zhangcarcard/article/details/51210811">深入解析Java中Flushable接口的flush方法</a></p>
+<p><a href="https://blog.csdn.net/HD243608836/article/details/87882100">FileOutputStream,OutputStreamWriter, BufferedWriter为什么连用？</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">martin6699s</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-10-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/blog/">Blog</a>
+          <a href="/tags/java-outputstream-or-writer/">Java OutputStream Or Writer</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2019-09-10-java-instrumentation-description-examples/">
+            <span class="next-text nav-default">JAVA Instrumentation之浅谈</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://localhost:1313" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="http://localhost:1313" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="http://localhost:1313" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="http://localhost:1313" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="http://localhost:1313" class="iconfont icon-google" title="google"></a>
+      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
+      <a href="http://localhost:1313" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://localhost:1313" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://localhost:1313" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://localhost:1313" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="http://localhost:1313" class="iconfont icon-tumblr" title="tumblr"></a>
+      <a href="http://localhost:1313" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="http://localhost:1313" class="iconfont icon-gitlab" title="gitlab"></a>
+      <a href="http://localhost:1313" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>martin6699</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
