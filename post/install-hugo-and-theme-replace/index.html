@@ -49,7 +49,7 @@
 <meta itemprop="description" content="今天尝试使用Hugo&#43;Github Pages搭建个人博客。 安装Hugo 这里介绍Mac和Windows两种系统对应的软件安装。其他请参考大神H">
 <meta itemprop="datePublished" content="2020-12-03T15:43:48+08:00" />
 <meta itemprop="dateModified" content="2020-12-03T15:43:48+08:00" />
-<meta itemprop="wordCount" content="1189">
+<meta itemprop="wordCount" content="1377">
 
 
 
@@ -315,6 +315,7 @@ hugo -t even
 </span><span class="lnt">29
 </span><span class="lnt">30
 </span><span class="lnt">31
+</span><span class="lnt">32
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
@@ -348,6 +349,90 @@ git commit -m <span class="s2">&#34;</span><span class="nv">$msg</span><span cla
 
 <span class="c1"># 回到原文件夹</span>
 <span class="nb">cd</span> ..
+
+</code></pre></td></tr></table>
+</div>
+</div><p>自己写了一个发布博客的执行脚本(deployment.sh)：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/sh
+</span><span class="cp"></span>
+<span class="nb">cd</span> E:/Personal/hugoSrc <span class="c1"># hugo site生成的目录</span>
+
+<span class="nv">var1</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+<span class="nb">echo</span> <span class="s2">&#34;1. The current working directory </span><span class="nv">$var1</span><span class="s2">.&#34;</span>
+
+<span class="c1"># If a command fails then the deploy stops</span>
+<span class="nb">set</span> -e
+
+<span class="nb">printf</span> <span class="s2">&#34;\033[0;32mDeploying updates to GitHub...\033[0m\n&#34;</span>
+
+rm -rf public
+
+<span class="c1"># Build the project.</span>
+hugo -t even <span class="c1"># if using a theme, replace with `hugo -t &lt;YOURTHEME&gt;`</span>
+
+<span class="c1"># Go To Public folder</span>
+cp -R ./public/* E:/Personal/martin6699s.github.io/
+
+<span class="nb">cd</span> E:/Personal/martin6699s.github.io/ <span class="c1"># gihub pages 目录</span>
+
+<span class="nv">var2</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+<span class="nb">echo</span> <span class="s2">&#34;2. The current working directory </span><span class="nv">$var2</span><span class="s2">.&#34;</span>
+
+
+<span class="c1"># Add changes to git.</span>
+git add .
+
+<span class="c1"># Commit changes.</span>
+<span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;rebuilding site </span><span class="k">$(</span>date<span class="k">)</span><span class="s2">&#34;</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$*</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+	<span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$*</span><span class="s2">&#34;</span>
+<span class="k">fi</span>
+git commit -m <span class="s2">&#34;</span><span class="nv">$msg</span><span class="s2">&#34;</span>
+
+<span class="c1"># Push source and build repos.</span>
+git push origin master
 </code></pre></td></tr></table>
 </div>
 </div><p>更多部署方式查看 <a href="https://gohugo.io/hosting-and-deployment/">gohugo.io/hosting-and…</a></p>
