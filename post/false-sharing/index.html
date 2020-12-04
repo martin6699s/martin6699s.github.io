@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>伪共享 - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="martin6699s" /><meta name="description" content="随机计算机发展，多核cpu时代的出现，也带来一些多核并发与共享上的问题。例如今天我们要说的伪共享。cpu取数据时总是从离它最近的缓存中取，而" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/false-sharing/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="伪共享" />
+<meta property="og:description" content="随机计算机发展，多核cpu时代的出现，也带来一些多核并发与共享上的问题。例如今天我们要说的伪共享。cpu取数据时总是从离它最近的缓存中取，而" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/false-sharing/" />
+<meta property="article:published_time" content="2020-12-04T15:36:48+08:00" />
+<meta property="article:modified_time" content="2020-12-04T15:36:48+08:00" />
+<meta itemprop="name" content="伪共享">
+<meta itemprop="description" content="随机计算机发展，多核cpu时代的出现，也带来一些多核并发与共享上的问题。例如今天我们要说的伪共享。cpu取数据时总是从离它最近的缓存中取，而">
+<meta itemprop="datePublished" content="2020-12-04T15:36:48+08:00" />
+<meta itemprop="dateModified" content="2020-12-04T15:36:48+08:00" />
+<meta itemprop="wordCount" content="891">
+
+
+
+<meta itemprop="keywords" content="伪共享,缓存," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="伪共享"/>
+<meta name="twitter:description" content="随机计算机发展，多核cpu时代的出现，也带来一些多核并发与共享上的问题。例如今天我们要说的伪共享。cpu取数据时总是从离它最近的缓存中取，而"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">伪共享</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-04 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#规避">规避</a></li>
+            <li><a href="#java-example">JAVA Example</a></li>
+            <li><a href="#参考">参考</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><strong>随机计算机发展，多核cpu时代的出现，也带来一些多核并发与共享上的问题。例如今天我们要说的伪共享。cpu取数据时总是从离它最近的缓存中取，而且离它越近的缓存读写速率越高。而缓存中是以缓存行（cache line）为单位存储的。缓存行是2的整数幂个连续字节，一般为32-256个字节。最常见的缓存行大小是64个字节。当多线程修改互相独立的变量时，如果这些变量共享同一个缓存行，就会无意中影响彼此的性能，这就是伪共享。</strong></p>
+<p>如下图</p>
+<p><img src="https://media.springernature.com/original/springer-static/image/chp%3A10.1007%2F978-1-4842-4941-3_8/MediaObjects/437795_1_En_8_Fig3_HTML.jpg" alt="真共享与伪共享"></p>
+<p>如上图右边False Sharing中： Core0和Core1各自缓存了x和y构成的缓存行,假如这时候Core0更新x变量，写入主存Memory中，那会触发缓存一致性协议，让Core1的Core1 Cache失效。假如这时候Core1要操作y变量，在它自己的一级缓存Core1 Cache找不到该缓存行，则会到主存中找 并重新加载到Core1 Cache中，那么就造成不一样的浪费。相互失效对方core的缓存行就是所谓的伪共享.</p>
+<h3 id="规避">规避</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sysctl -a | grep cache | grep size
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">fs.generic.nfs.server.reqcache_size: 64
+hw.l3cachesize: 3145728
+hw.l2cachesize: 262144
+hw.l1dcachesize: 32768
+hw.l1icachesize: 32768
+hw.cachelinesize: 64
+hw.cachesize: 8589934592 32768 262144 3145728 0 0 0 0 0 0
+machdep.cpu.cache.size: 256
+machdep.cpu.cache.linesize: 64
+</code></pre></td></tr></table>
+</div>
+</div><p>找到系统的Cache Line大小，然后在x,y变量前后都插入padding填充，让x，y都分配到不同的缓存行中就行。</p>
+<h3 id="java-example">JAVA Example</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">cn</span><span class="p">.</span><span class="nx">java</span><span class="p">.</span><span class="nx">falseSharing</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">concurrent</span><span class="p">.</span><span class="nx">atomic</span><span class="p">.</span><span class="nx">AtomicLong</span><span class="p">;</span>
+
+<span class="nx">public</span> <span class="nx">class</span> <span class="nx">FalseSharingExample2</span> <span class="nx">implements</span> <span class="nx">Runnable</span><span class="p">{</span>
+
+    <span class="cm">/**
+</span><span class="cm">     * duration = 7164825701
+</span><span class="cm">     * duration = 6914103977
+</span><span class="cm">     * duration = 6920889856
+</span><span class="cm">     * 测试该程序duration是10位数字，而其他没填充的有11位-12位之多。
+</span><span class="cm">     */</span>
+
+    <span class="nx">public</span> <span class="nx">final</span> <span class="nx">static</span> <span class="kt">int</span> <span class="nx">NUM_THREADS</span> <span class="p">=</span> <span class="mi">4</span><span class="p">;</span> <span class="c1">// change
+</span><span class="c1"></span>    <span class="nx">public</span> <span class="nx">final</span> <span class="nx">static</span> <span class="nx">long</span> <span class="nx">ITERATIONS</span> <span class="p">=</span> <span class="mi">500</span><span class="nx">L</span> <span class="o">*</span> <span class="mi">1000</span><span class="nx">L</span> <span class="o">*</span> <span class="mi">1000</span><span class="nx">L</span><span class="p">;</span>
+    <span class="nx">private</span> <span class="nx">final</span> <span class="kt">int</span> <span class="nx">arrayIndex</span><span class="p">;</span>
+
+    <span class="nx">private</span> <span class="nx">static</span> <span class="nx">PaddedAtomicLong</span><span class="p">[]</span> <span class="nx">longs</span> <span class="p">=</span> <span class="nx">new</span> <span class="nx">PaddedAtomicLong</span><span class="p">[</span><span class="nx">NUM_THREADS</span><span class="p">];</span>
+    <span class="nx">static</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nx">i</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">longs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">longs</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">new</span> <span class="nf">PaddedAtomicLong</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">public</span> <span class="nf">FalseSharingExample2</span><span class="p">(</span><span class="nx">final</span> <span class="kt">int</span> <span class="nx">arrayIndex</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">this</span><span class="p">.</span><span class="nx">arrayIndex</span> <span class="p">=</span> <span class="nx">arrayIndex</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">void</span> <span class="nf">main</span><span class="p">(</span><span class="nx">final</span> <span class="nx">String</span><span class="p">[]</span> <span class="nx">args</span><span class="p">)</span> <span class="nx">throws</span> <span class="nx">Exception</span>
+    <span class="p">{</span>
+        <span class="nx">final</span> <span class="nx">long</span> <span class="nx">start</span> <span class="p">=</span> <span class="nx">System</span><span class="p">.</span><span class="nf">nanoTime</span><span class="p">();</span>
+        <span class="nf">runTest</span><span class="p">();</span>
+        <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="s">&#34;duration = &#34;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">System</span><span class="p">.</span><span class="nf">nanoTime</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="nx">private</span> <span class="nx">static</span> <span class="nx">void</span> <span class="nf">runTest</span><span class="p">()</span> <span class="nx">throws</span> <span class="nx">InterruptedException</span>
+    <span class="p">{</span>
+        <span class="nx">Thread</span><span class="p">[]</span> <span class="nx">threads</span> <span class="p">=</span> <span class="nx">new</span> <span class="nx">Thread</span><span class="p">[</span><span class="nx">NUM_THREADS</span><span class="p">];</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nx">i</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">threads</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">threads</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">new</span> <span class="nf">Thread</span><span class="p">(</span><span class="nx">new</span> <span class="nf">FalseSharingExample2</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="nx">Thread</span> <span class="nx">t</span> <span class="p">:</span> <span class="nx">threads</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">t</span><span class="p">.</span><span class="nf">start</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="nx">Thread</span> <span class="nx">t</span> <span class="p">:</span> <span class="nx">threads</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">t</span><span class="p">.</span><span class="nf">join</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">public</span> <span class="nx">void</span> <span class="nf">run</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nx">long</span> <span class="nx">i</span> <span class="p">=</span> <span class="nx">ITERATIONS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nf">while</span> <span class="p">(</span><span class="mi">0</span> <span class="o">!=</span> <span class="o">--</span><span class="nx">i</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">longs</span><span class="p">[</span><span class="nx">arrayIndex</span><span class="p">].</span><span class="nf">set</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 之所以加这看似无用的静态方法，是为了避免JVM优化掉填充变量
+</span><span class="c1"></span>    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">long</span> <span class="nf">sumPaddingToPreventOptimisation</span><span class="p">(</span><span class="nx">final</span> <span class="kt">int</span> <span class="nx">index</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">PaddedAtomicLong</span> <span class="nx">v</span> <span class="p">=</span> <span class="nx">longs</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
+        <span class="k">return</span> <span class="nx">v</span><span class="p">.</span><span class="nx">p1</span> <span class="o">+</span> <span class="nx">v</span><span class="p">.</span><span class="nx">p2</span> <span class="o">+</span> <span class="nx">v</span><span class="p">.</span><span class="nx">p3</span> <span class="o">+</span> <span class="nx">v</span><span class="p">.</span><span class="nx">p4</span> <span class="o">+</span> <span class="nx">v</span><span class="p">.</span><span class="nx">p5</span> <span class="o">+</span> <span class="nx">v</span><span class="p">.</span><span class="nx">p6</span><span class="p">;</span>
+    <span class="p">}</span>
+
+   
+    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">class</span> <span class="nx">PaddedAtomicLong</span> <span class="nx">extends</span> <span class="nx">AtomicLong</span>
+    <span class="p">{</span>
+        <span class="nx">public</span> <span class="nx">volatile</span> <span class="nx">long</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">p3</span><span class="p">,</span> <span class="nx">p4</span><span class="p">,</span> <span class="nx">p5</span><span class="p">,</span> <span class="nx">p6</span> <span class="p">=</span> <span class="mi">7</span><span class="nx">L</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="参考">参考</h3>
+<p><a href="http://ifeve.com/false-shareing-java-7-cn/">http://ifeve.com/false-shareing-java-7-cn/</a></p>
+<p><a href="https://www.cnblogs.com/Binhua-Liu/p/5620339.html">https://www.cnblogs.com/Binhua-Liu/p/5620339.html</a></p>
+<p><a href="https://andrewpqc.github.io/2020/01/11/false-sharing/">https://andrewpqc.github.io/2020/01/11/false-sharing/</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">martin6699s</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a href="https://github.com/martin6699s/martin6699s.github.io" rel="noopener" target="_blank">See origin</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E4%BC%AA%E5%85%B1%E4%BA%AB/">伪共享</a>
+          <a href="/tags/%E7%BC%93%E5%AD%98/">缓存</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/synchronized%E5%8E%9F%E7%90%86/">
+            <span class="next-text nav-default">JAVA Synchronized 原理</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://localhost:1313" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="http://localhost:1313" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="http://localhost:1313" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="http://localhost:1313" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="http://localhost:1313" class="iconfont icon-google" title="google"></a>
+      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
+      <a href="http://localhost:1313" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://localhost:1313" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://localhost:1313" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://localhost:1313" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="http://localhost:1313" class="iconfont icon-tumblr" title="tumblr"></a>
+      <a href="http://localhost:1313" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="http://localhost:1313" class="iconfont icon-gitlab" title="gitlab"></a>
+      <a href="http://localhost:1313" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>martin6699s</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
