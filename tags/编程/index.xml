@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>编程 on Even - A super concise theme for Hugo</title>
+    <link>http://localhost:1313/tags/%E7%BC%96%E7%A8%8B/</link>
+    <description>Recent content in 编程 on Even - A super concise theme for Hugo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 04 Dec 2020 09:30:48 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TCP/IP 高效编程技巧总结</title>
+      <link>http://localhost:1313/post/tcp&#43;ip%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Fri, 04 Dec 2020 09:30:48 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/tcp&#43;ip%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/</guid>
+      <description>TCP/IP 高效编程技巧总结 第一章 套接字API 支持不同的通信域，最常见的两种域：AF_INET（因特网）和AF_LOCAL（或AF_UNIX）。 其中A</description>
+    </item>
+    
+  </channel>
+</rss>

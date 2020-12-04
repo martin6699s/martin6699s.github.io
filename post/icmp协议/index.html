@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ICMP协议 - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="martin6699s" /><meta name="description" content="ICMP协议 ICMP协议 全称是 Internet Control Message Protocol 是与IP协议同属于第三层网络层的，是一种“错误侦测与回报机制”，其目的是便于我们检测网络的连线状况，其" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/icmp%E5%8D%8F%E8%AE%AE/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ICMP协议" />
+<meta property="og:description" content="ICMP协议 ICMP协议 全称是 Internet Control Message Protocol 是与IP协议同属于第三层网络层的，是一种“错误侦测与回报机制”，其目的是便于我们检测网络的连线状况，其" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/icmp%E5%8D%8F%E8%AE%AE/" />
+<meta property="article:published_time" content="2020-12-04T09:36:48+08:00" />
+<meta property="article:modified_time" content="2020-12-04T09:36:48+08:00" />
+<meta itemprop="name" content="ICMP协议">
+<meta itemprop="description" content="ICMP协议 ICMP协议 全称是 Internet Control Message Protocol 是与IP协议同属于第三层网络层的，是一种“错误侦测与回报机制”，其目的是便于我们检测网络的连线状况，其">
+<meta itemprop="datePublished" content="2020-12-04T09:36:48+08:00" />
+<meta itemprop="dateModified" content="2020-12-04T09:36:48+08:00" />
+<meta itemprop="wordCount" content="1416">
+
+
+
+<meta itemprop="keywords" content="ICMP,网络," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ICMP协议"/>
+<meta name="twitter:description" content="ICMP协议 ICMP协议 全称是 Internet Control Message Protocol 是与IP协议同属于第三层网络层的，是一种“错误侦测与回报机制”，其目的是便于我们检测网络的连线状况，其"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ICMP协议</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-04 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#icmp协议">ICMP协议</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="icmp协议">ICMP协议</h1>
+<p>ICMP协议 全称是 Internet Control Message Protocol  是与IP协议同属于第三层网络层的，是一种“错误侦测与回报机制”，其目的是便于我们检测网络的连线状况，其功能有：</p>
+<ol>
+<li>侦测远端主机是否存在。</li>
+<li>建立及维护路由资料。</li>
+<li>重导资料传送路径。</li>
+<li>资料流量控制。</li>
+</ol>
+<ul>
+<li><strong>ping</strong></li>
+</ul>
+<p>其中ping命令就是是用ICMP协议包，使用ping命令可以帮助我们排查诸多状况，例如：</p>
+<ol>
+<li>ping不通主机名或域名，ping得通ip，很可能dns不工作了。</li>
+<li>ping对方的router（如果您知道其地址的话），假如ping得上，那可能是对方机器和其相连网络的问题；</li>
+<li>如果ping不到对方的router，那么可以ping自己的router。如果ping得上，那么好可能是router和router之间的问题；</li>
+<li>如果自己的router也ping不到，那么可能是自己的机器和router之间的问题，我们可以ping一下自己的IP。如果自己的IP可以ping得到，那么可能是连线的问题，我们可以检查一下网线、hub等设备，看看有没有损坏的状况。</li>
+<li>同时，我们也可以ping一下网络上其他机器，也可以用其它机器ping一下router，来判别一下问题来自自己机器，还是网路，还是router等等。</li>
+<li>如果自己的IP都ping不到，那么可能是网卡坏掉或者没有正确设定，可以看看设备资源有没有冲突，也可以看看设备有没有被系统启动。</li>
+<li>如果看来都没问题，那么可以ping一下回环地址127.0.0.1， 如果连这个都ping不了的话，这台机器的IP功能根本没有被启动。那么，你就要检查一下网络功能有没有选择，IP协定有没有被绑定（bind）等基本网络设定了。</li>
+</ol>
+<p>使用ping命令  实际上是送出一个echo-request(type 8)的ICMP包，如果对方机器收到这个请求，并且愿意做出回应，则送回一个echo-reply(type 0)的ICMP包，当这回应顺利到达时，那就完成一个ping的动作。</p>
+<p>那么可以设置机器不回应任何echo-request包，若在Linux上，只要用下面命令就可以了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#34;1&#34; &gt; /proc/sys/net/ipv4/icmp_echo_ignore_all
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p><strong>traceroute命令（windows tracert命令）</strong></p>
+<p><em>TTL</em>是 Time To Live的缩写，该字段指定IP包被路由器丢弃之前允许通过的最大网段数量。</p>
+<p>traceroute命令就是利用ICMP包的TTL，本质上是IP包的TTL。看它如何运作的：</p>
+<ol>
+<li>首先，traceroute命令会向目标地址送出UDP侦测封包（在Linux中，可用-I改为ICMP封包），但将第一个送出的封包之TTL设为1，这样，第一个路由节点在处理这个封包的时候，减掉1，并发现TTL为0， 于是就不处理这个封包，并同时送回一个ICMP封包。这样，发送端就知道第一个路由节点在哪里了。</li>
+<li>当接得到第一个ICMP返回的时候，程序会检查返回主机是否就是目标主机，如果不是，则再送出第二个封包，但TTL比上次增加1。</li>
+<li>这样，第一路由节点接到的封包之TTL就不是0，那么处理完毕后送给下一个节点，同时将TTL扣除1。这样，当下一个站收到这个封包，再扣掉TTL为0，也会送回ICMP封包，这样，程序就知道第二个路由节点在哪里了。</li>
+<li>然后重复上述2，3动作，直到找到目标主机为止，或是封包的最大TTL（通常为30）都用光为止，但您可以用-m参数来指定最大的TTL值。</li>
+</ol>
+<p>另外如果traceroute的某行结果维持*星号，那可能是因为ICMP被对方的防火墙拦下来的结果。这样就无法完成防火墙后的路由追踪了。</p>
+</li>
+</ul>
+<p>参考 
+<a href="%5Bhttp://www.liwangmeng.com/icmp%e5%8d%8f%e8%ae%ae/comment-page-1/#comment-1328%5D(http://www.liwangmeng.com/icmp%e5%8d%8f%e8%ae%ae/comment-page-1/#comment-1328)">ICMP协议</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">martin6699s</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a href="https://github.com/martin6699s/martin6699s.github.io" rel="noopener" target="_blank">See origin</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/icmp/">ICMP</a>
+          <a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/tcp&#43;ip%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/">
+            <span class="next-text nav-default">TCP/IP 高效编程技巧总结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://localhost:1313" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="http://localhost:1313" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="http://localhost:1313" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="http://localhost:1313" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="http://localhost:1313" class="iconfont icon-google" title="google"></a>
+      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
+      <a href="http://localhost:1313" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://localhost:1313" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://localhost:1313" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://localhost:1313" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="http://localhost:1313" class="iconfont icon-tumblr" title="tumblr"></a>
+      <a href="http://localhost:1313" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="http://localhost:1313" class="iconfont icon-gitlab" title="gitlab"></a>
+      <a href="http://localhost:1313" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>martin6699s</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

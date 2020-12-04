@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Hugo&#43;Github Pages搭建博客 - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="martin6699s" /><meta name="description" content="今天尝试使用Hugo&#43;Github Pages搭建个人博客。 安装Hugo 这里介绍Mac和Windows两种系统对应的软件安装。其他请参考大神H" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/install-hugo-and-theme-replace/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Hugo&#43;Github Pages搭建博客" />
+<meta property="og:description" content="今天尝试使用Hugo&#43;Github Pages搭建个人博客。 安装Hugo 这里介绍Mac和Windows两种系统对应的软件安装。其他请参考大神H" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/install-hugo-and-theme-replace/" />
+<meta property="article:published_time" content="2020-12-03T15:43:48+08:00" />
+<meta property="article:modified_time" content="2020-12-03T15:43:48+08:00" />
+<meta itemprop="name" content="Hugo&#43;Github Pages搭建博客">
+<meta itemprop="description" content="今天尝试使用Hugo&#43;Github Pages搭建个人博客。 安装Hugo 这里介绍Mac和Windows两种系统对应的软件安装。其他请参考大神H">
+<meta itemprop="datePublished" content="2020-12-03T15:43:48+08:00" />
+<meta itemprop="dateModified" content="2020-12-03T15:43:48+08:00" />
+<meta itemprop="wordCount" content="1189">
+
+
+
+<meta itemprop="keywords" content="Hugo,Github," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hugo&#43;Github Pages搭建博客"/>
+<meta name="twitter:description" content="今天尝试使用Hugo&#43;Github Pages搭建个人博客。 安装Hugo 这里介绍Mac和Windows两种系统对应的软件安装。其他请参考大神H"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Hugo&#43;Github Pages搭建博客</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-03 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#安装hugo">安装Hugo</a></li>
+            <li><a href="#建立hugo项目">建立Hugo项目</a></li>
+            <li><a href="#添加主题">添加主题</a></li>
+            <li><a href="#启动hugo">启动Hugo</a></li>
+            <li><a href="#添加新博客文章">添加新博客文章</a></li>
+            <li><a href="#打包">打包</a></li>
+            <li><a href="#部署到github-pages上">部署到Github Pages上</a></li>
+            <li><a href="#参考链接">参考链接：</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>今天尝试使用Hugo+Github Pages搭建个人博客。</p>
+<h3 id="安装hugo">安装Hugo</h3>
+<p>这里介绍Mac和Windows两种系统对应的软件安装。其他请参考大神<a href="https://juejin.cn/post/6844903831726194696">Hugo+Github Pages</a>，感谢分享。</p>
+<h4 id="mac-安装hugo">Mac 安装Hugo</h4>
+<p>既可以使用 HomeBrew 安装，也可以在 <a href="https://github.com/gohugoio/hugo/releases">github.com/gohugoio/hu…</a> 下载二进制包安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># HomeBrew安装
+brew install hugo 
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="windows-安装hugo">Windows 安装Hugo</h4>
+<p>在 <a href="https://github.com/gohugoio/hugo/releases">github.com/gohugoio/hu…</a> 找到32位或64位windows对应压缩包（如我的用了hugo_0.79.0_Windows-64bit.zip），下载二进制包安装。</p>
+<p>解压后，有一个hugo.exe文件，把该文件目录加入到环境变量Path中</p>
+<p>命令行输入<code>hugo version</code> ,输出版本信息表示安装成功。更多安装方式https://gohugo.io/getting-started/installing</p>
+<h3 id="建立hugo项目">建立Hugo项目</h3>
+<p>一个 Hugo 项目就是一个站点，创建命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hugo new site [project-name]
+
+</code></pre></td></tr></table>
+</div>
+</div><p>例如我的站点名称是 <strong>blog</strong>,创建命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hugo new site blog
+
+</code></pre></td></tr></table>
+</div>
+</div><p>创建完成后，在 <strong>blog</strong> 文件夹下会生成以下文件结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">.
+├── archetypes # 存放生成博客的模版
+├── assets # 存放被 Hugo Pipes 处理的文件
+├── config # 存放 hugo 配置文件 支持 JSON YAML TOML 三种格式配置文件
+├── content # 存放 markdown 文件
+├── data # 存放 Hugo 处理的数据
+├── layouts # 存放布局文件
+├── static # 存放静态文件 图片 CSS JS文件
+└── themes # 存放主题
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="添加主题">添加主题</h3>
+<p>为了快速搭建博客，可以使用主题。使用主题后，只需要向 <strong>content</strong> 文件夹添加 Markdown 文件即可。</p>
+<p>Hugo 有主题市场 <a href="https://themes.gohugo.io/">themes.gohugo.io/</a> ，好看的主题：</p>
+<ol>
+<li><a href="https://github.com/olOwOlo/hugo-theme-even">github.com/olOwOlo/hug…</a></li>
+<li><a href="https://github.com/yoshiharuyamashita/blackburn">github.com/yoshiharuya…</a></li>
+</ol>
+<p>第一个好看一些，我选择了第一个。进入根目录，克隆主题文件就是安装主题。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cd blog
+git clone https://github.com/olOwOlo/hugo-theme-even themes/even
+</code></pre></td></tr></table>
+</div>
+</div><p>进入 <strong>blog/themes/even/exampleSite</strong> 文件夹，将 <strong>config.tom</strong> 文件拷贝到项目根目录下，同时将 <strong>blog/themes/even/exampleSite/content</strong> 文件夹覆盖掉根目录下的 <strong>content</strong> 。</p>
+<p>其中config.tom文件是配置文件，根据自己的想法更改。</p>
+<h3 id="启动hugo">启动Hugo</h3>
+<p>命令行输入以下命令，启动 Hugo :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hugo server
+</code></pre></td></tr></table>
+</div>
+</div><p>在浏览器打开 <code>http://localhost:1313/</code> 即可查看效果。</p>
+<p>为了个人使用，需要修改 <strong>config.tom</strong> 文件，根据说明修改配置即可。</p>
+<h3 id="添加新博客文章">添加新博客文章</h3>
+<p>使用hugo命令 添加新博客模板，命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hugo new post/my-first-blog.md
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="打包">打包</h3>
+<p>为了部署到Github Pages 需要将Markdown文件打包成HTML文件，打包命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># even是主题
+hugo -t even
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="部署到github-pages上">部署到Github Pages上</h3>
+<p>打包之后就是纯 HTML 文件，理论上所有支持部署静态页面的网站都是支持的。</p>
+<p>部署命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="c1"># 部署到 github pages 脚本</span>
+<span class="c1"># 错误时终止脚本</span>
+<span class="nb">set</span> -e
+
+<span class="c1"># 删除打包文件夹</span>
+rm -rf public
+
+<span class="c1"># 打包。even 是主题</span>
+hugo -t even <span class="c1"># if using a theme, replace with `hugo -t &lt;YOURTHEME&gt;`</span>
+
+<span class="c1"># 进入打包文件夹</span>
+<span class="nb">cd</span> public
+
+<span class="c1"># Add changes to git.</span>
+
+git init
+git add -A
+
+<span class="c1"># Commit changes.</span>
+<span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;building site `date`&#34;</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -eq <span class="m">1</span> <span class="o">]</span>
+  <span class="k">then</span> <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+<span class="k">fi</span>
+git commit -m <span class="s2">&#34;</span><span class="nv">$msg</span><span class="s2">&#34;</span>
+
+<span class="c1"># 推送到github</span>
+<span class="c1"># git push origin master 只能使用 master分支</span>
+
+<span class="c1"># 回到原文件夹</span>
+<span class="nb">cd</span> ..
+</code></pre></td></tr></table>
+</div>
+</div><p>更多部署方式查看 <a href="https://gohugo.io/hosting-and-deployment/">gohugo.io/hosting-and…</a></p>
+<h3 id="参考链接">参考链接：</h3>
+<p><a href="https://juejin.cn/post/6844903831726194696">https://juejin.cn/post/6844903831726194696</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">martin6699s</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-03
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a href="https://github.com/martin6699s/martin6699s.github.io" rel="noopener" target="_blank">See origin</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/hugo/">Hugo</a>
+          <a href="/tags/github/">Github</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/tcp&#43;ip%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">TCP/IP 高效编程技巧总结</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/2019-10-19-java-outputstream/">
+            <span class="next-text nav-default">JAVA IO输出流总结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://localhost:1313" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="http://localhost:1313" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="http://localhost:1313" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="http://localhost:1313" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="http://localhost:1313" class="iconfont icon-google" title="google"></a>
+      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
+      <a href="http://localhost:1313" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://localhost:1313" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://localhost:1313" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://localhost:1313" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="http://localhost:1313" class="iconfont icon-tumblr" title="tumblr"></a>
+      <a href="http://localhost:1313" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="http://localhost:1313" class="iconfont icon-gitlab" title="gitlab"></a>
+      <a href="http://localhost:1313" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>martin6699s</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

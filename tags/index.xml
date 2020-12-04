@@ -6,7 +6,52 @@
     <description>Recent content in Tags on Even - A super concise theme for Hugo</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 19 Oct 2019 13:32:20 +0300</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Dec 2020 09:36:48 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ICMP</title>
+      <link>http://localhost:1313/tags/icmp/</link>
+      <pubDate>Fri, 04 Dec 2020 09:36:48 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/icmp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>网络</title>
+      <link>http://localhost:1313/tags/%E7%BD%91%E7%BB%9C/</link>
+      <pubDate>Fri, 04 Dec 2020 09:36:48 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/%E7%BD%91%E7%BB%9C/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>编程</title>
+      <link>http://localhost:1313/tags/%E7%BC%96%E7%A8%8B/</link>
+      <pubDate>Fri, 04 Dec 2020 09:30:48 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/%E7%BC%96%E7%A8%8B/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Github</title>
+      <link>http://localhost:1313/tags/github/</link>
+      <pubDate>Thu, 03 Dec 2020 15:43:48 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hugo</title>
+      <link>http://localhost:1313/tags/hugo/</link>
+      <pubDate>Thu, 03 Dec 2020 15:43:48 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Blog</title>
       <link>http://localhost:1313/tags/blog/</link>
@@ -31,6 +76,15 @@
       <pubDate>Tue, 10 Sep 2019 13:32:20 +0300</pubDate>
       
       <guid>http://localhost:1313/tags/java-instrument/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TCP/IP</title>
+      <link>http://localhost:1313/tags/tcp/ip/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/tags/tcp/ip/</guid>
       <description></description>
     </item>
     

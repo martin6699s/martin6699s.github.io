@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>TCP/IP 高效编程技巧总结 - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="martin6699s" /><meta name="description" content="TCP/IP 高效编程技巧总结 第一章 套接字API 支持不同的通信域，最常见的两种域：AF_INET（因特网）和AF_LOCAL（或AF_UNIX）。 其中A" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/tcp&#43;ip%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="TCP/IP 高效编程技巧总结" />
+<meta property="og:description" content="TCP/IP 高效编程技巧总结 第一章 套接字API 支持不同的通信域，最常见的两种域：AF_INET（因特网）和AF_LOCAL（或AF_UNIX）。 其中A" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/tcp&#43;ip%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/" />
+<meta property="article:published_time" content="2020-12-04T09:30:48+08:00" />
+<meta property="article:modified_time" content="2020-12-04T09:30:48+08:00" />
+<meta itemprop="name" content="TCP/IP 高效编程技巧总结">
+<meta itemprop="description" content="TCP/IP 高效编程技巧总结 第一章 套接字API 支持不同的通信域，最常见的两种域：AF_INET（因特网）和AF_LOCAL（或AF_UNIX）。 其中A">
+<meta itemprop="datePublished" content="2020-12-04T09:30:48+08:00" />
+<meta itemprop="dateModified" content="2020-12-04T09:30:48+08:00" />
+<meta itemprop="wordCount" content="4778">
+
+
+
+<meta itemprop="keywords" content="TCP/IP,编程," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TCP/IP 高效编程技巧总结"/>
+<meta name="twitter:description" content="TCP/IP 高效编程技巧总结 第一章 套接字API 支持不同的通信域，最常见的两种域：AF_INET（因特网）和AF_LOCAL（或AF_UNIX）。 其中A"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">TCP/IP 高效编程技巧总结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-04 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#tcpip-高效编程技巧总结">TCP/IP 高效编程技巧总结</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#第一章">第一章</a></li>
+            <li><a href="#第二章">第二章</a></li>
+            <li><a href="#第三章-构建高效且健全的网络程序">第三章 构建高效且健全的网络程序</a></li>
+            <li><a href="#第4章-工具和资源">第4章 工具和资源</a></li>
+            <li><a href="#参考-tcpip高效编程技巧书籍">参考 TCP/IP高效编程技巧书籍</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="tcpip-高效编程技巧总结">TCP/IP 高效编程技巧总结</h1>
+<h3 id="第一章">第一章</h3>
+<p>套接字API 支持不同的通信域，最常见的两种域：AF_INET（因特网）和AF_LOCAL（或AF_UNIX）。</p>
+<p>其中AF_LOCAL域用于同一台机器上的IPC。</p>
+<h3 id="第二章">第二章</h3>
+<h4 id="1-子网划分和cidr的区别">1. 子网划分和CIDR的区别</h4>
+<p>CIDR会把子网掩码输出到网络之外，让子网掩码成为该网络上的路由表条目的一部分。而子网划分不需要暴露子网掩码</p>
+<h4 id="2-理解私有地址和nat">2. 理解私有地址和NAT</h4>
+<p>永远保留不会被分配的保留IP地址：</p>
+<p>10.0.0.0  ~ 10.255.255.255</p>
+<p>172.16.0.0 ~ 172.31.255.255</p>
+<p>192.168.0.0 ~ 192.168.255.255</p>
+<h5 id="3-nat的三种模式静态地址池pat端口地址转换">3. NAT的三种模式：静态、地址池、PAT（端口地址转换）</h5>
+<h5 id="认识到tcp是一个可靠的但并不绝对可靠的协议导致这类问题的原因">认识到TCP是一个可靠的，但并不绝对可靠的协议，导致这类问题的原因：</h5>
+<p>（1） 永久或临时的网络中断</p>
+<p>（2） 对等的应用程序崩溃</p>
+<p>（3） 允许对等应用程序的主机崩溃</p>
+<h3 id="第三章-构建高效且健全的网络程序">第三章 构建高效且健全的网络程序</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">下面解释两个名词：
+RTT(Round Trip Time)：一个连接的往返时间，即数据发送时刻到接收到确认的时刻的差值；
+RTO(Retransmission Time Out)：重传超时时间，即从数据发送时刻算起，超过这个时间便执行重传。
+RTT和RTO 的关系是：由于网络波动的不确定性，每个RTT都是动态变化的，所以RTO也应随着RTT动态变化。
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="理解tcp的写操作">理解TCP的写操作</h4>
+<p>对TCP连接使用写操作时，最好将写操作理解成将数据复制到发送队列，并通知TCP此队列中有新数据的一种操作。写操作正确返回 则是TCP通知应用程序收到请求，但数据还在队列中没发送出去。可以将TCP的行为作为收到这种通知后的结果，但要把它看作本质上是异步写操作的一种行为。</p>
+<p>只要调用TCP输出例程(输出程序)，它就会根据发送缓冲区(对等实体也就是接收端TCP缓冲区空间)、发送窗口长度、拥塞窗口长度和MSS中的最小值计算出可以发送的数据量。只要下列某一项符合，数据就会被传送出去：</p>
+<ol>
+<li>可以发送一个完整MSS尺寸的端；</li>
+<li>连接空闲，并且可以清空发送缓冲区；</li>
+<li>Nagle算法被禁止，并且可以清空发送缓冲区；</li>
+<li>有紧急数据需要发送；</li>
+<li>有一小段“暂时”无法发送的数据；</li>
+<li>对等实体的接收窗口至少是半开的；</li>
+<li>需要重传一个段；</li>
+<li>需要为来自对等实体的数据回送一个ACK；</li>
+<li>需要发布一次窗口更新。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">close 一个套接字的默认行为是把套接字标记为已关闭，然后立即返回到调用进程，该套接字描述符不能再由调用进程使用，也就是说它不能再作为read或write的第一个参数，然而TCP将尝试发送已排队等待发送到对端的任何数据，发送完毕后发生的是正常的TCP连接终止序列。
+
+在多进程并发服务器中，父子进程共享着套接字，套接字描述符引用计数记录着共享着的进程个数，当父进程或某一子进程close掉套接字时，描述符引用计数会相应的减一，当引用计数仍大于零时，这个close调用就不会引发TCP的四路握手断连过程。
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Linux网络编程-端口复用 （多个套接字绑定同一端口）
+实际上，默认的情况下，如果一个网络应用程序的一个套接字 绑定了一个端口( 占用了 8000 )，这时候，别的套接字就无法使用这个端口( 8000 )
+
+设置socket的SO_REUSEADDR选项，即可实现端口复用：
+
+SO_REUSEADDR可以用在以下四种情况下。 (摘自《Unix网络编程》卷一，即UNPv1)
+
+1、当有一个有相同本地地址和端口的socket1处于TIME_WAIT状态时，而你启动的程序的socket2要占用该地址和端口，你的程序就要用到该选项。
+
+2、SO_REUSEADDR允许同一port上启动同一服务器的多个实例(多个进程)。但每个实例绑定的IP地址是不能相同的。在有多块网卡或用IP Alias技术的机器可以测试这种情况。
+
+3、SO_REUSEADDR允许单个进程绑定相同的端口到多个socket上，但每个socket绑定的ip地址不同。这和2很相似，区别请看UNPv1。
+
+4、SO_REUSEADDR允许完全相同的地址和端口的重复绑定。但这只用于UDP的多播，不用于TCP。
+
+
+
+需要注意的是，设置端口复用函数要在绑定之前调用，而且只要绑定到同一个端口的所有套接字都得设置复用
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="321-shutdown调用">3.2.1 shutdown调用</h5>
+<p>有三种：</p>
+<p>1、 shutdown(s, 0) ， 0表示关闭连接的接收端。此实现在linux和windows上有区别，但对应连接已关闭但应用程序队列里还有数据所做的响应， 以及对来自对等实体的新数据的接收方式有所不同。如果数据在队列中，或者刚好有数据到达，winsock会重置连接，被认为是不安全的。</p>
+<p>2、 shutdown(s, 1),     1表示关闭连接的发送端。 此实现在linux和windows上一致。</p>
+<p>3、 shutdown(s, 2),     2表示两端关闭。相当于调用一次 shutdown(s, 0)，再执行 shutdown(s, 1)</p>
+<h5 id="322-有序释放">3.2.2 有序释放</h5>
+<p>shutdown(s, 1)的调用保证连接有序释放。有序释放，是在确保没有数据丢失的情况下拆除连接的一个过程。相反的，close调用后，如果发送缓冲区还有数据发送给已调用close的对等实体，会被丢弃掉，并收到来自对等实体的RST包。</p>
+<h5 id="38-不要用time_wait暗杀来关闭一条连接">3.8 不要用TIME_WAIT暗杀来关闭一条连接</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">设置函数close()关闭TCP连接时的行为。缺省close()的行为是，如果有数据残留在socket发送缓冲区中则系统将继续发送这些数据给对方，等待被确认，然后返回。
+</code></pre></td></tr></table>
+</div>
+</div><p>SO_LINGER结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">struct linger {
+int l_onoff            /** on/off选型 */
+int l_linger;         /**  逗留时间 超时返回时间*/
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>onoff为0，和默认缺省行为一样，close方法或closesocket方法调用立即返回，内核继续尝试发送在发送缓冲区里未发送的数据，上层应用程序无法感知剩余数据是否已发送到对等实体；</p>
+<p>onoff不为0，linger设置超时返回时间，调用close方法或closesocket方法 不会立即返回，而是阻塞直到超时时间到了才返回，在超时时间里TCP会继续尝试发送未发送的数据，如果超时时间到，还有数据未发送，则丢弃，按“onoff不为0，linger设置为0”处理。</p>
+<p>onoff不为0，linger设置为0，调用close方法或closesocket方法立即返回 则会发送一个RST包，丢弃发送缓冲区数据，并<strong>立即跳过TIME_WAIT</strong></p>
+<h5 id="39-服务器应该设置so_reuseaddr选项">3.9 服务器应该设置SO_REUSEADDR选项</h5>
+<ol>
+<li>
+<p>设置了SO_REUSEADDR,可以避免<strong>TCP</strong>连接在TIME_WAIT状态，重启服务(也就是建立新连接时)出现“Address already in use”。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">说明例外：
+即使客户端来自同一台远程主机，并且使用了相同的端口号，可能也不会有什么问题。只要客户端的SYN序列号大于处于TIME_WAIT状态的连接的最后一个序列号，传统的BSD实现就允许进行连接。
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">有人认为设置了SO_REUSEADDR选项很危险，因为这样就会允许创建相同的TCP四元组了，会引起问题。其实这看法是不对的。如果创建两个完全相同的监听套接字。第一个创建成功，第二个肯定会创建绑定失败，TCP会拒绝第二个连接。
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>设置SO_REUSERADDR选型，可以方便UDP服务器在多宿主机上识别到底对等客户端指定了那个目标地址，也就是识别从哪个个网口接口进来。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Stevens[Stevens,1998]指出使用SO_REUSEADDR有一个小的安全隐患。如果像大多数情况那样，一台服务器绑定到通配地址INADDR_ANY上，另一台设置了SO_REUSEADDR的服务器，绑定到具有相同端口，但地址更具体的套接字上，就会从第一台服务器哪里“偷取”一些连接。
+   又比如，假定一个服务器运行在一台多宿主机上，并且需要知道客户端指定了哪个接口作为其目的地址。对TCP来说，这是很容器的，服务器只要在每次连接建立时调用getsockname就可以了，但除非TCP/IP实现支持套接字选项IP_RECVDSTADDR,否则UDP服务器就无法获知此事。UDP服务器可以通过下面方法解决问题：
+指定SO_REUSEADDR, 并将其知名端口绑定到它关心的特定接口上，将通配地址INADDR_ANY绑定到它不关心的接口上。这样服务器就知道客户端指定的是哪个目的地址，数据报是在哪个套接字上抵达的了。
+   
+一个套接字由相关五元组构成，协议、本地地址、本地端口、远程地址、远程端口。SO_REUSEADDR 仅仅表示可以重用本地本地地址、本地端口，整个相关五元组还是唯一确定的。所以，重启后的服务程序有可能收到非期望数据。必须慎重使用SO_REUSEADDR 选项。
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>总结：SO_REUSEADDR选型对于UDP Socket和TCP Socket有着不同的意义。对于UDP, SO_REUSEADDR决定多个DatagramSocket是否可以同时绑定到相同的IP地址和端口。如果多个DatagramSocket绑定到相同的IP地址和端口，到达该地址的数据报会复制给所有的DatagramSocket</strong></p>
+</li>
+<li>
+<p>用于多播系统</p>
+</li>
+</ol>
+<h5 id="310-可能的话使用一个大规模的写操作而不是多个小规模的写操作">3.10 可能的话，使用一个大规模的写操作，而不是多个小规模的写操作</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">可以关闭Nagle算法，并不意味着应该将其关闭。有合法理由关闭的应用程序比不需要关闭的应用程序少得多。在向对等应用程序发送报文时，程序员不小心进行了一系列小规模的写操作而不是一次大规模的写操作，从而造成了常见的性能比预期的要差很多，并请求帮助。总有人会送：“哦，这是Nagle算法造成的。把它关掉就行了。”果然，禁用Nagle算法之后，性能问题很可能就消失了。但通过这种方法获取的性能是以网络中小报文的增加为代价的。如果有足够多的应用程序都采用这种做法，或者更糟的是，像某些人建议的那样，在默认情况下将Nagle算法禁止，网络拥塞就会加剧，极端情况下甚至造成网络崩溃。
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="315-不要将ip地址或端口硬编入应用程序中">3.15 不要将IP地址或端口硬编入应用程序中</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">linux系统中/etc/services文件提供了服务/端口之间的转换关系，如：
+lin@lin:~$ cat /etc/services
+.....
+netstat         15/tcp                          # (was once asssigned, no more)
+poppassd        106/tcp                         # Eudora
+poppassd        106/udp                         # Eudora
+omirr           808/tcp         omirrd          # online mirror
+omirr           808/udp         omirrd          # online mirror
+swat            901/tcp         smpnameres      # Samba Web Administration Tool
+.....
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="316-理解已连接的udp套接字">3.16 理解已连接的UDP套接字</h5>
+<p><code>对于TCP来说，调用connect会使对等实体通过三次握手来交换初始状态信息，状态信息中包含每个对等实体的地址和端口。因此，对于TCP来说，connect的作用之一就是将远端实体的地址和端口绑定到本端套接字上。</code></p>
+<p><code>这与调用bind不同，bind的功能是将本地地址和端口绑定到套接字上</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">尽管对一个无连接协议使用connect看起来好像没什么意义，但实际上可以产生更高效的程序，而且如果希望接收与UDP数据报有关的错误报文，就必须使用connect.
+
+UDP使用connect方法的好处：如果要向同一个对等实体发送一系列UDP数据报的话，使用connect方法效率会更高。另外，UDP是无状态的，只要数据报被发送出去，系统就会忘记它。但是将套接字连接到对等实体上去时（也就是调用connect时），与套接字有关的PCB就会将这些内容记录下来，这样TCP/IP栈就可以将UDP首部的副本与PCB匹配起来，告诉它应该将ICMP报文传送到哪个套接字上。
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="第4章-工具和资源">第4章 工具和资源</h3>
+<h5 id="学习使用traceroute或tracert">学习使用traceroute或tracert</h5>
+<p>traceroute和tracert都是通过不断向目的地发送TTL值并且每次都递增TTL值的数据包，并观察中间路由器发回的ICMP传输超时报文来工作的。他们不同之处在于，traceroute发送UDP数据包，而tracert发送ICMP回声请求报文。</p>
+<h5 id="学习使用lsof----使用lsof命令必须是root用户运行才有效">学习使用lsof&mdash; 使用lsof命令必须是root用户运行才有效。</h5>
+<p>需要强调的是，lsof，这个名字代表“列出正在打开的文件”，它只提供那些确实打开了的文件的相关信息。这就意味着，比方说处于TIME_WAIT状态的TCP连接相关信息，就无法从lsof这里获取到。</p>
+<h5 id="学习netstat">学习netstat</h5>
+<p>linux netstat 用处：</p>
+<ol>
+<li>查活动套接字的信息。</li>
+<li>查网络接口：<code>netstat -i</code>。</li>
+<li>查路由表信息：<code>netstat -sn </code></li>
+<li>协议统计信息：<code>netstat -sp udp</code></li>
+</ol>
+<h5 id="学习使用系统中的调用追踪工具通过内核来追踪系统调用">学习使用系统中的调用追踪工具：通过内核来追踪系统调用；</h5>
+<p>如BSD系统中，有ktrace; 在Linux中则是strace；</p>
+<h3 id="参考-tcpip高效编程技巧书籍">参考 TCP/IP高效编程技巧书籍</h3>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">martin6699s</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a href="https://github.com/martin6699s/martin6699s.github.io" rel="noopener" target="_blank">See origin</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/tcp/ip/">TCP/IP</a>
+          <a href="/tags/%E7%BC%96%E7%A8%8B/">编程</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/icmp%E5%8D%8F%E8%AE%AE/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">ICMP协议</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/install-hugo-and-theme-replace/">
+            <span class="next-text nav-default">Hugo&#43;Github Pages搭建博客</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://localhost:1313" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="http://localhost:1313" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="http://localhost:1313" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="http://localhost:1313" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="http://localhost:1313" class="iconfont icon-google" title="google"></a>
+      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
+      <a href="http://localhost:1313" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://localhost:1313" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://localhost:1313" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://localhost:1313" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="http://localhost:1313" class="iconfont icon-tumblr" title="tumblr"></a>
+      <a href="http://localhost:1313" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="http://localhost:1313" class="iconfont icon-gitlab" title="gitlab"></a>
+      <a href="http://localhost:1313" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>martin6699s</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
