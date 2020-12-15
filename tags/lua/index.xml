@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>lua on Even - A super concise theme for Hugo</title>
+    <link>http://localhost:1313/tags/lua/</link>
+    <description>Recent content in lua on Even - A super concise theme for Hugo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 15 Dec 2020 15:43:48 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/lua/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Redis 小结</title>
+      <link>http://localhost:1313/post/redis-little-summary/</link>
+      <pubDate>Tue, 15 Dec 2020 15:43:48 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/redis-little-summary/</guid>
+      <description>今天做一点Redis小知识点总结，以便后面可以重新回顾。 1. 从2.6.12版本开始，SET命令支持 EX、PX、NX和XX的选项。 命令：SET key</description>
+    </item>
+    
+  </channel>
+</rss>

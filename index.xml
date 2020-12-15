@@ -6,7 +6,7 @@
     <description>Recent content on Even - A super concise theme for Hugo</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 04 Dec 2020 15:36:48 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 15 Dec 2020 15:43:48 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>关于</title>
       <link>http://localhost:1313/about/</link>
@@ -14,6 +14,15 @@
       
       <guid>http://localhost:1313/about/</guid>
       <description>Hugo is a static site engine written in Go. It makes use of a variety of open source projects including: Learn more and contribute on GitHub.</description>
+    </item>
+    
+    <item>
+      <title>Redis 小结</title>
+      <link>http://localhost:1313/post/redis-little-summary/</link>
+      <pubDate>Tue, 15 Dec 2020 15:43:48 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/redis-little-summary/</guid>
+      <description>今天做一点Redis小知识点总结，以便后面可以重新回顾。 1. 从2.6.12版本开始，SET命令支持 EX、PX、NX和XX的选项。 命令：SET key</description>
     </item>
     
     <item>

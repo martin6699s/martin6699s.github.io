@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Redis 小结 - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="martin6699s" /><meta name="description" content="今天做一点Redis小知识点总结，以便后面可以重新回顾。 1. 从2.6.12版本开始，SET命令支持 EX、PX、NX和XX的选项。 命令：SET key" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/redis-little-summary/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Redis 小结" />
+<meta property="og:description" content="今天做一点Redis小知识点总结，以便后面可以重新回顾。 1. 从2.6.12版本开始，SET命令支持 EX、PX、NX和XX的选项。 命令：SET key" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/redis-little-summary/" />
+<meta property="article:published_time" content="2020-12-15T15:43:48+08:00" />
+<meta property="article:modified_time" content="2020-12-15T15:43:48+08:00" />
+<meta itemprop="name" content="Redis 小结">
+<meta itemprop="description" content="今天做一点Redis小知识点总结，以便后面可以重新回顾。 1. 从2.6.12版本开始，SET命令支持 EX、PX、NX和XX的选项。 命令：SET key">
+<meta itemprop="datePublished" content="2020-12-15T15:43:48+08:00" />
+<meta itemprop="dateModified" content="2020-12-15T15:43:48+08:00" />
+<meta itemprop="wordCount" content="1959">
+
+
+
+<meta itemprop="keywords" content="Redis,lua,分布式锁," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redis 小结"/>
+<meta name="twitter:description" content="今天做一点Redis小知识点总结，以便后面可以重新回顾。 1. 从2.6.12版本开始，SET命令支持 EX、PX、NX和XX的选项。 命令：SET key"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">马丁每天都很忙</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">马丁每天都很忙</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Redis 小结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-15 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>今天做一点Redis小知识点总结，以便后面可以重新回顾。</p>
+<h4 id="1-从2612版本开始set命令支持-expxnx和xx的选项"><strong>1. 从2.6.12版本开始，SET命令支持 EX、PX、NX和XX的选项。</strong></h4>
+<p>命令：<code>SET key value [EX seconds|PX milliseconds|KEEPTTL] [NX|XX] [GET]</code></p>
+<p>这样就很方便，假如我想判断key不存在，才允许插入并设置过期时间，就可以实现操作原子性。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">SET anotherkey &#34;will expire in a minute&#34; EX 60 NX
+</code></pre></td></tr></table>
+</div>
+</div><p>而不用“先执行setnx命令，执行成功再 执行expire命令”，两条命令没法保证操作原子性。</p>
+<h4 id="2-从2-6版本开始redis内置lua脚本解析器也可以使用lua脚本执行命令确保多命令的原子性"><strong>2. 从2. 6版本开始，Redis内置lua脚本解析器，也可以使用lua脚本执行命令，确保多命令的原子性。</strong></h4>
+<p>值得注意的是Redis与lua之间的数据类型转换：</p>
+<blockquote>
+<p><strong>Redis to Lua</strong> conversion table.</p>
+<ul>
+<li>Redis integer reply -&gt; Lua number</li>
+<li>Redis bulk reply -&gt; Lua string</li>
+<li>Redis multi bulk reply -&gt; Lua table (may have other Redis data types nested)</li>
+<li>Redis status reply -&gt; Lua table with a single <code>ok</code> field containing the status</li>
+<li>Redis error reply -&gt; Lua table with a single <code>err</code> field containing the error</li>
+<li>Redis Nil bulk reply and Nil multi bulk reply -&gt; Lua false boolean type</li>
+</ul>
+<p><strong>Lua to Redis</strong> conversion table.</p>
+<ul>
+<li>Lua number -&gt; Redis integer reply (the number is converted into an integer)</li>
+<li>Lua string -&gt; Redis bulk reply</li>
+<li>Lua table (array) -&gt; Redis multi bulk reply (truncated to the first nil inside the Lua array if any)</li>
+<li>Lua table with a single <code>ok</code> field -&gt; Redis status reply</li>
+<li>Lua table with a single <code>err</code> field -&gt; Redis error reply</li>
+<li>Lua boolean false -&gt; Redis Nil bulk reply.</li>
+</ul>
+<p>There is an additional Lua-to-Redis conversion rule that has no corresponding Redis to Lua conversion rule:</p>
+<ul>
+<li>Lua boolean true -&gt; Redis integer reply with value of 1.</li>
+</ul>
+<p>Lastly, there are three important rules to note:</p>
+<ul>
+<li>Lua has a single numerical type, Lua numbers. There is no distinction between integers and floats. So we always convert Lua numbers into integer replies, removing the decimal part of the number if any. <strong>If you want to return a float from Lua you should return it as a string</strong>, exactly like Redis itself does (see for instance the <a href="https://redis.io/commands/zscore">ZSCORE</a> command).</li>
+<li>There is <a href="http://www.lua.org/pil/19.1.html">no simple way to have nils inside Lua arrays</a>, this is a result of Lua table semantics, so when Redis converts a Lua array into Redis protocol the conversion is stopped if a nil is encountered.</li>
+<li>When a Lua table contains keys (and their values), the converted Redis reply will <strong>not</strong> include them.</li>
+</ul>
+</blockquote>
+<h4 id="3-monitor命令用于监控redis-server上处理的每天命令"><strong>3. monitor命令，用于监控redis server上处理的每天命令。</strong></h4>
+<p>monitor命令可以在redis-cli和telnet上使用，更详细信息请看官网<a href="https://redis.io/commands/monitor">redis monitor</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ redis-cli monitor
+1339518083.107412 [0 127.0.0.1:60866] &#34;keys&#34; &#34;*&#34;
+1339518087.877697 [0 127.0.0.1:60866] &#34;dbsize&#34;
+1339518090.420270 [0 127.0.0.1:60866] &#34;set&#34; &#34;x&#34; &#34;6&#34;
+1339518096.506257 [0 127.0.0.1:60866] &#34;get&#34; &#34;x&#34;
+1339518099.363765 [0 127.0.0.1:60866] &#34;del&#34; &#34;x&#34;
+1339518100.544926 [0 127.0.0.1:60866] &#34;get&#34; &#34;x&#34;
+或者
+$ redis-cli -h 172.16.12.12 -p 6379 -a passwords monitor
+
+</code></pre></td></tr></table>
+</div>
+</div><p>在未来版本中，monitor命令将不能监控记录到所有管理级别的命令。如AUTH, EXEC,HELLO,QUIT.</p>
+<h4 id="4-设置redis日志输出"><strong>4. 设置redis日志输出</strong></h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">在redis.config或者redis.windows-service.conf中
+1. loglevel设置debug：
+   loglevel debug
+  
+2. 设置redis日志文件位置  
+   logfile &#34;Logs/redis_log.txt&#34;  
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="5-防止锁误删除"><strong>5. 防止锁误删除</strong></h4>
+<p>可以使用lua脚本判断锁值是不是一致的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">if redis.call(&#34;get&#34;,KEYS[1]) == ARGV[1]
+then
+    return redis.call(&#34;del&#34;,KEYS[1])
+else
+    return 0
+end
+</code></pre></td></tr></table>
+</div>
+</div><p>具体Spring Boot Redis代码可以参考https://github.com/martin6699s/java-examples/tree/master/springBootExample2021</p>
+<h4 id="6-防超时解锁导致并发"><strong>6. 防超时解锁导致并发</strong></h4>
+<p>如果线程 A 成功获取锁并设置过期时间 30 秒，但线程 A 执行时间超过了 30 秒，锁过期自动释放，此时线程 B 获取到了锁，线程 A 和线程 B 并发执行。</p>
+<p>A、B 两个线程发生并发显然是不被允许的，一般有两种方式解决该问题：</p>
+<ul>
+<li>将过期时间设置足够长，确保代码逻辑在锁释放之前能够执行完成。</li>
+<li>为获取锁的线程增加守护线程，为将要过期但未释放的锁增加有效时间。</li>
+</ul>
+<h4 id="7-执行lua脚本时不必担心执行过程中key过期-">**7. 执行lua脚本时，不必担心执行过程中key过期 **</h4>
+<p>因为在执行lua脚本时，redis上的所有的键过期时间，都会使用进入脚本瞬间的时间来判断。</p>
+<p>redis判断过期都会调用在<code>db.c</code>代码的expireIfNeeded方法，而在其中的keyIsExpired方法是关键，展示下部分代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">* The return value of the function is 0 if the key is still valid,
+ * otherwise the function returns 1 if the key is expired. */
+int expireIfNeeded(redisDb *db, robj *key) {
+    if (!keyIsExpired(db,key)) return 0;
+    ......此处省略代码
+    
+}
+
+/* Check if the key is expired. */
+int keyIsExpired(redisDb *db, robj *key) {
+    mstime_t when = getExpire(db,key);
+    mstime_t now;
+    
+    ......此处省略代码
+ 
+    /* If we are in the context of a Lua script, we pretend that time is
+     * blocked to when the Lua script started. This way a key can expire
+     * only the first time it is accessed and not in the middle of the
+     * script execution, making propagation to slaves / AOF consistent.
+     * See issue #1525 on Github for more information. */
+    if (server.lua_caller) {
+        now = server.lua_time_start;
+    }
+   
+    .......此处省略代码
+    
+    return now &gt; when;
+}    
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="8-使用redis分布式锁及redlock算法的场景"><strong>8. 使用redis分布式锁及RedLock算法的场景</strong></h4>
+<blockquote>
+<p>antirez 大神总结了</p>
+<ol>
+<li>
+<p>分布式的锁具有一个自动释放的功能。锁的互斥性，只在过期时间之内有效，锁过期释放以后就会造成多个Client 持有锁。</p>
+</li>
+<li>
+<p>RedLock 整个系统是建立在，一个在实际系统无法保证的系统模型上的。在这个例子中就是系统假设时间是同步且可信的。</p>
+</li>
+</ol>
+</blockquote>
+<p>正常情况下使用分布式锁并没什么问题，而当系统处于非主从模式又非集群模式的情况下，例如主从模式下 master故障，发生主从切换的那段时间，锁可能丢失。再如集群（主从）发生脑裂的情况下，也会导致锁失效。</p>
+<p>而antirez考虑到这些问题，所以才有了RedLock算法；</p>
+<p>RedLock算法&mdash;&mdash;假如有5个节点，客户端用相同的key和随机值在5个节点上请求锁，请求锁的超时时间应小于锁自动释放时间。当在3个（超过半数）redis上请求到锁的时候，才算是真正获取到了锁。如果没有获取到锁，则把部分已锁的redis释放掉。</p>
+<p>不过RedLock算法也有他的局限性，无法保证100%没问题。就如antirez说的是在假定时间可信的前提下。</p>
+<h4 id="参考">参考：</h4>
+<p><a href="https://juejin.cn/post/6844903506998984711">Redis RedLock 完美的分布式锁么？</a></p>
+<p><a href="https://xiaomi-info.github.io/2019/12/17/redis-distributed-lock/">分布式锁的实现之 redis 篇</a></p>
+<p><a href="https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html">How to do distributed locking</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">martin6699s</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-15
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a href="https://github.com/martin6699s/martin6699s.github.io" rel="noopener" target="_blank">See origin</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/redis/">Redis</a>
+          <a href="/tags/lua/">lua</a>
+          <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">分布式锁</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/false-sharing/">
+            <span class="next-text nav-default">伪共享</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="123@123.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/martin6699s" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>martin6699s</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
