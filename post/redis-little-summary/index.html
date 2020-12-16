@@ -49,7 +49,7 @@
 <meta itemprop="description" content="今天做一点Redis小知识点总结，以便后面可以重新回顾。 1. 从2.6.12版本开始，SET命令支持 EX、PX、NX和XX的选项。 命令：SET key">
 <meta itemprop="datePublished" content="2020-12-15T15:43:48+08:00" />
 <meta itemprop="dateModified" content="2020-12-15T15:43:48+08:00" />
-<meta itemprop="wordCount" content="1959">
+<meta itemprop="wordCount" content="1958">
 
 
 
@@ -272,7 +272,7 @@ end
 <li>将过期时间设置足够长，确保代码逻辑在锁释放之前能够执行完成。</li>
 <li>为获取锁的线程增加守护线程，为将要过期但未释放的锁增加有效时间。</li>
 </ul>
-<h4 id="7-执行lua脚本时不必担心执行过程中key过期-">**7. 执行lua脚本时，不必担心执行过程中key过期 **</h4>
+<h4 id="7-执行lua脚本时不必担心执行过程中key过期"><strong>7. 执行lua脚本时，不必担心执行过程中key过期</strong></h4>
 <p>因为在执行lua脚本时，redis上的所有的键过期时间，都会使用进入脚本瞬间的时间来判断。</p>
 <p>redis判断过期都会调用在<code>db.c</code>代码的expireIfNeeded方法，而在其中的keyIsExpired方法是关键，展示下部分代码</p>
 <div class="highlight"><div class="chroma">
